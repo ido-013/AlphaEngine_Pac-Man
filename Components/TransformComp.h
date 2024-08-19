@@ -17,6 +17,7 @@ private:
 
 public:
 	TransformComp(GameObject* _owner);
+	~TransformComp();
 
 	void Update() override;
 

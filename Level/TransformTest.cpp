@@ -7,7 +7,6 @@
 #include "../Components/SpriteComp.h"
 #include "../Components/PlayerComp.h"
 #include "../Components/RigidbodyComp.h"
-#include "../Components/ColliderComp.h"
 #include "../EventManager/EventManager.h"
 #include <iostream>
 
@@ -15,7 +14,7 @@ GameObject* player = nullptr;
 GameObject* coin = nullptr;
 GameObject* flag = nullptr;
 
-void Levels::TransformTest::Init()
+void level::TransformTest::Init()
 {
 	player = new GameObject();
 	coin = new GameObject();
@@ -24,7 +23,8 @@ void Levels::TransformTest::Init()
 	//
 	coin->AddComponent<TransformComp>();
 	coin->AddComponent<SpriteComp>();
-	coin->AddComponent<ColliderComp>();
+
+	coin->SetType(Entity::Coin);
 
 	TransformComp* ct = coin->GetComponent<TransformComp>();
 	ct->SetScale({ 100, 100 });
@@ -33,13 +33,11 @@ void Levels::TransformTest::Init()
 	SpriteComp* cs = coin->GetComponent<SpriteComp>();
 	cs->SetTexture("Assets/coin.png");
 
-	ColliderComp* cc = coin->GetComponent<ColliderComp>();
-	cc->SetType(Entity::Coin);
-
 	//
 	flag->AddComponent<TransformComp>();
 	flag->AddComponent<SpriteComp>();
-	flag->AddComponent<ColliderComp>();
+
+	flag->SetType(Entity::Flag);
 
 	TransformComp* ft = flag->GetComponent<TransformComp>();
 	ft->SetScale({ 100, 100 });
@@ -48,15 +46,14 @@ void Levels::TransformTest::Init()
 	SpriteComp* fs = flag->GetComponent<SpriteComp>();
 	fs->SetTexture("Assets/coin.png");
 
-	ColliderComp* fc = flag->GetComponent<ColliderComp>();
-	fc->SetType(Entity::Flag);
-
 	//
 	player->AddComponent<TransformComp>();
 	player->AddComponent<SpriteComp>();
 	player->AddComponent<RigidbodyComp>();
 	player->AddComponent<PlayerComp>();
 	player->AddComponent<AudioComp>();
+
+	player->SetType(Entity::Player);
 
 	PlayerComp* pp = player->GetComponent<PlayerComp>();
 
@@ -68,17 +65,12 @@ void Levels::TransformTest::Init()
 
 	AudioComp* pa = player->GetComponent<AudioComp>();
 	pa->SetAudio("Assets/Audio/bouken.mp3");
-
-	//
-	EventManager::GetEMPtr()->RegisterEntity<CollisionEvent>(pp);
-	fc->AddTrans(pt);
-	cc->AddTrans(pt);
 }
 
-void Levels::TransformTest::Update()
+void level::TransformTest::Update()
 {
-	//trs->PrintMatrix();
+
 }
 
-void Levels::TransformTest::Exit()
+void level::TransformTest::Exit()
 {}

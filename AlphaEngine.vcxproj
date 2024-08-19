@@ -100,12 +100,12 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q</C
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CollisionManager\CollisionManager.cpp" />
     <ClCompile Include="ComponentManager\EngineComponent.cpp" />
     <ClCompile Include="GameObject\GameObject.cpp" />
     <ClCompile Include="ComponentManager\GraphicComponent.cpp" />
     <ClCompile Include="ComponentManager\LogicComponent.cpp" />
     <ClCompile Include="Components\AudioComp.cpp" />
-    <ClCompile Include="Components\ColliderComp.cpp" />
     <ClCompile Include="Components\PlayerComp.cpp" />
     <ClCompile Include="Components\RigidbodyComp.cpp" />
     <ClCompile Include="Components\SpriteComp.cpp" />
@@ -129,6 +129,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q</C
     <ClCompile Include="Serializer\Serializer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CollisionManager\CollisionManager.h" />
     <ClInclude Include="ComponentManager\BaseComponent.h" />
     <ClInclude Include="ComponentManager\ComponentManager.h" />
     <ClInclude Include="ComponentManager\EngineComponent.h" />
@@ -136,7 +137,6 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q</C
     <ClInclude Include="ComponentManager\GraphicComponent.h" />
     <ClInclude Include="ComponentManager\LogicComponent.h" />
     <ClInclude Include="Components\AudioComp.h" />
-    <ClInclude Include="Components\ColliderComp.h" />
     <ClInclude Include="Components\PlayerComp.h" />
     <ClInclude Include="Components\RigidbodyComp.h" />
     <ClInclude Include="Components\SpriteComp.h" />

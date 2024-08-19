@@ -2,18 +2,12 @@
 #include "PlayerComp.h"
 #include "TransformComp.h"
 #include "RigidbodyComp.h"
-#include "ColliderComp.h"
 #include "../Event/CollisionEvent.h"
 #include "../GSM/GameStateManger.h"
 
 PlayerComp::PlayerComp(GameObject* _owner) : LogicComponent(_owner)
 {
 	
-}
-
-void PlayerComp::OnEvent(Event* event)
-{
-	CollisionEvent* c = dynamic_cast<CollisionEvent*>(event);
 }
 
 void PlayerComp::Update()

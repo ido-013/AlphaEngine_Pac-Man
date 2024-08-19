@@ -12,10 +12,6 @@ private:
 	//A container for all my events* (queue)
 	std::queue<Event*> allEvents;
 
-	//A container to have which entities are registered to which events
-	//map of (events, container of entities* (list))
-	std::map<std::string, std::list<Entity*>> regEvents;
-
 	//Make singleton
 	EventManager();
 
@@ -32,23 +28,14 @@ private:
 public:
 	//Interface:
 	//	GetSingleton
-	static EventManager* GetEMPtr();
+	static EventManager* GetPtr();
 
 	//	DeleteSingleton
-	static void DeleteEM();
+	static void DeletePtr();
 
 	// Add an event (event*) this are pointers to dynamic memory, called as the following: AddEvent(new Event);
 	template <typename T>
-	void AddEvent(Entity* _owner);
-
-	// template fn:
-	//		Register entities to a certain event TYPE
-	template <typename T>
-	void RegisterEntity(Entity*);
-
-	//		Unregister entities to a certain event TYPE
-	template <typename T>
-	void UnregisterEntity(Entity*);
+	void AddEvent(Entity* src, Entity* dst);	
 
 	// DispatchAllEvents
 	void DispatchAllEvents();

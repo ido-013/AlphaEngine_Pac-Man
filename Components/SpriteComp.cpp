@@ -67,7 +67,6 @@ void SpriteComp::SetColor(const unsigned char& r, const unsigned char& g, const 
 
 void SpriteComp::SetTexture(std::string name)
 {
-	//ResourceManager::GetRMPtr()->UnloadResource(s);
 	textureName = name;
 	tex = ResourceManager::GetRMPtr()->GetResource<AEGfxTexture>(name);
 }

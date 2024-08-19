@@ -7,7 +7,7 @@ EventManager::EventManager() {}
 
 EventManager::~EventManager() {}
 
-EventManager* EventManager::GetEMPtr()
+EventManager* EventManager::GetPtr()
 {
     if (ptr == nullptr)
     {
@@ -17,7 +17,7 @@ EventManager* EventManager::GetEMPtr()
     return ptr;
 }
 
-void EventManager::DeleteEM()
+void EventManager::DeletePtr()
 {
     if (ptr)
     {
@@ -30,16 +30,7 @@ void EventManager::DispatchAllEvents()
 {
     while (!allEvents.empty())
     {
-        auto it = regEvents.find(allEvents.front()->name);
-
-        if (it != regEvents.end())
-        {
-            for (auto entity : it->second)
-            {
-                entity->OnEvent(allEvents.front());
-            }
-        }
-
+        allEvents.front()->DispatchEvent();
         delete allEvents.front();
         allEvents.pop();
     }

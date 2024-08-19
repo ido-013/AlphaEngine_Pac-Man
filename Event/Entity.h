@@ -6,6 +6,7 @@ class Entity
 public:
 	enum Type
 	{
+		Player = 0,
 		Coin = 1,
 		Flag = 2
 	};

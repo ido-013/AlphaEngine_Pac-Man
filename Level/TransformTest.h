@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseLevel.h"
 
-namespace Levels
+namespace level
 {
 	class TransformTest : public GSM::BaseLevel
 	{

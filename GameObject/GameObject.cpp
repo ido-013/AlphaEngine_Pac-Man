@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "../ComponentManager/BaseComponent.h"
 #include "../GameObjectManager/GameObjectManager.h"
+#include "../Event/CollisionEvent.h"
 
 GameObject::GameObject() : component()
 {
@@ -16,4 +17,15 @@ GameObject::~GameObject()
 	}
 
 	component.clear();
+}
+
+void GameObject::OnEvent(Event* event)
+{
+	if (GetType() == Entity::Player)
+	{
+		if (dynamic_cast<CollisionEvent*>(event) != nullptr)
+		{
+			
+		}
+	}
 }

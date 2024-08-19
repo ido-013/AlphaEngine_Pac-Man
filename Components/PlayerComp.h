@@ -2,15 +2,14 @@
 #include "../ComponentManager/LogicComponent.h"
 #include "../Event/Entity.h"
 
-class PlayerComp : public LogicComponent, public Entity
+class PlayerComp : public LogicComponent
 {
 private:
-	float speed = 100;
+	float speed = 10;
 	long score = 0;
 
 public:
 	PlayerComp(GameObject* _owner);
-	void OnEvent(Event* event) override;
 	void Update() override;
 
 	void LoadFromJson(const json&) override;

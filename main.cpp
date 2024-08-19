@@ -6,6 +6,7 @@
 #include "GSM/GameStateManger.h"
 #include "Level/InitialLevel.h"
 #include "Level/TestLevel.h"
+#include "Level/TransformTest.h"
 
 // ---------------------------------------------------------------------------
 // main
@@ -35,7 +36,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// reset the system modules
 	AESysReset();
 
-	GSM::GameStateManager::GetGSMPtr()->ChangeLevel(new level::InitialLevel);
+	GSM::GameStateManager::GetGSMPtr()->ChangeLevel(new level::TransformTest);
 
 	// Game Loop
 	while (gsm->ShouldExit() == false && gGameRunning)

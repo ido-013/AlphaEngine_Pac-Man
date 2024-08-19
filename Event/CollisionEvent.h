@@ -3,5 +3,5 @@
 
 struct CollisionEvent : public Event
 {
-	CollisionEvent(Entity* _owner) : Event("struct CollisionEvent", _owner) {}
+	CollisionEvent(Entity* _src, Entity* _dst) : Event(_src, _dst) {}
 };

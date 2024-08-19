@@ -7,6 +7,7 @@
 #include "../ComponentManager/GraphicComponent.h"
 #include "../Components/AudioComp.h"
 #include "../EventManager/EventManager.h"
+#include "../CollisionManager/CollisionManager.h"
 
 GSM::GameStateManager* GSM::GameStateManager::ptr = nullptr;
 
@@ -57,7 +58,9 @@ void GSM::GameStateManager::Update()
         ComponentManager<GraphicComponent>::GetCMPtr()->Update();
         ComponentManager<AudioComp>::GetCMPtr()->Update();
 
-        EventManager::GetEMPtr()->DispatchAllEvents();
+        EventManager::GetPtr()->DispatchAllEvents();
+
+        CollisionManager::GetPtr()->Update();
 
         AEGfxSetBackgroundColor(0, 0, 0);
 
@@ -73,6 +76,9 @@ void GSM::GameStateManager::Exit()
         ComponentManager<EngineComponent>::DeleteCM();
         ComponentManager<GraphicComponent>::DeleteCM();
         ComponentManager<AudioComp>::DeleteCM();
+
+        EventManager::DeletePtr();
+        CollisionManager::DeletePtr();
 
         currentLevel->Exit();
     }

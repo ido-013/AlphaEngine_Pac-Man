@@ -5,9 +5,11 @@ class Entity;
 
 struct Event
 {
-	Event(std::string _name, Entity* _owner);
+	Event(Entity* _src, Entity* _des);
 	virtual ~Event() = default;
+
+	void DispatchEvent();
 	
-	Entity* owner;
-	std::string name;
+	Entity* src;
+	Entity* dst;
 };

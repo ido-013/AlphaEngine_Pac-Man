@@ -1,4 +1,5 @@
 #include "TransformComp.h"
+#include "../CollisionManager/CollisionManager.h"
 
 void TransformComp::CalculateMatrix()
 {
@@ -28,6 +29,13 @@ TransformComp::TransformComp(GameObject* _owner) : EngineComponent(_owner), pos(
 	scale.y = 1;
 
 	CalculateMatrix();
+
+	CollisionManager::GetPtr()->AddTrans(this);
+}
+
+TransformComp::~TransformComp()
+{
+	CollisionManager::GetPtr()->DelTrans(this);
 }
 
 void TransformComp::Update()
@@ -105,16 +113,11 @@ json TransformComp::SaveToJson()
 {
 	json data;
 
-	// Save the type (for RTTI)
 	data["type"] = TypeName;
 
-	// Save my data
 	json compData;
-	//	position
 	compData["position"] = { pos.x, pos.y };
-	//	scale
 	compData["scale"] = { scale.x, scale.y };
-	//	rotation
 	compData["rotation"] = rot;
 
 	data["compData"] = compData;
