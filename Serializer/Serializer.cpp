@@ -4,7 +4,9 @@
 #include "../ComponentManager/BaseComponent.h"
 #include "../ComponentManager/ComponentManager.h"
 #include "../GameObjectManager/GameObjectManager.h"
+#include "../Components/TransformComp.h"
 #include "../RTTI/Registry.h"
+#include "../Prefab/Prefab.h"
 
 using json = nlohmann::ordered_json;	// Map. Orders the order the variables were declared in
 
@@ -42,8 +44,9 @@ void Serializer::LoadLevel(const std::string& filename)
 
 	for (auto& item : allData)
 	{
-		GameObject* go = new GameObject;
 		auto objIt = item.find("object");
+		Prefab p(objIt.value());
+		GameObject* go = p.NewGameObject();
 
 		if (objIt != item.end())
 		{
@@ -60,12 +63,8 @@ void Serializer::LoadLevel(const std::string& filename)
 
 				std::string typeName = dataIt.value().dump();	// convert to string
 				typeName = typeName.substr(1, typeName.size() - 2);
-				std::cout << typeName << std::endl;
 
-				// Look in the regitstry for this type and create it
-				BaseRTTI* p = Registry::GetInstance().FindAndCreate(typeName, go);
-				if (p != nullptr)
-					p->LoadFromJson(comp);
+				go->GetBase(typeName)->LoadFromJson(comp);
 			}
 		}
 	}
@@ -81,14 +80,10 @@ void Serializer::SaveLevel(const std::string& filename)
 	for (GameObject* go : GameObjectManager::GetPtr()->GetAllObjects())
 	{
 		json obj;
-		obj["object"] = i++;
+		obj["object"] = go->name;
 
 		json components;
-		for (auto comp : go->component)
-		{
-			BaseComponent* c = comp.second;
-			components.push_back(c->SaveToJson());
-		}
+		components.push_back(go->GetComponent<TransformComp>()->SaveToJson());
 		obj["components"] = components;
 
 		allData.push_back(obj);

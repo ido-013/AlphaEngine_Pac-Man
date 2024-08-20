@@ -67,10 +67,12 @@ GameObject* Prefab::NewGameObject()
 		std::string typeName = dataIt.value().dump();
 		typeName = typeName.substr(1, typeName.size() - 2);
 
-		BaseRTTI* p = Registry::GetInstance().FindAndCreate(typeName, obj);
+		BaseRTTI* p = Registry::GetPtr()->FindAndCreate(typeName, obj);
 		if (p != nullptr)
 			p->LoadFromJson(comp);
 	}
+
+	obj->name = name;
 
 	return obj;
 }

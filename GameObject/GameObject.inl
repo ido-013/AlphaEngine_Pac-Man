@@ -8,7 +8,7 @@ inline T* GameObject::AddComponent()
 	}
 
 	T* comp = new T(this);
-	component.insert({ typeid(T).name(), comp });
+	component.insert({ T::TypeName, comp });
 }
 
 template <typename T>
@@ -20,14 +20,14 @@ inline T* GameObject::AddComponent(BaseComponent* comp)
 		return nullptr;
 	}
 
-	component.insert({ typeid(T).name(), comp });
+	component.insert({ T::TypeName, comp });
 }
 
 
 template<typename T>
 inline T* GameObject::GetComponent()
 {
-	auto it = component.find(typeid(T).name());
+	auto it = component.find(T::TypeName);
 	if (it != component.end())
 	{
 		return static_cast<T*>(it->second);
@@ -39,7 +39,7 @@ inline T* GameObject::GetComponent()
 template<typename T>
 inline void GameObject::DeleteComponent()
 {
-	auto it = component.find(typeid(T).name());
+	auto it = component.find(T::TypeName);
 	if (it != component.end())
 	{
 		delete it->second;

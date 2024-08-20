@@ -29,3 +29,14 @@ void GameObject::OnEvent(Event* event)
 		}
 	}
 }
+
+BaseComponent* GameObject::GetBase(std::string typeName)
+{
+	auto it = component.find(typeName);
+	if (it != component.end())
+	{
+		return it->second;
+	}
+
+	return nullptr;
+}

@@ -5,6 +5,8 @@
 #include "../Components/SpriteComp.h"
 #include "../Components/RigidBodyComp.h"
 
+Registry* Registry::ptr;
+
 Registry::Registry()
 {
     // Register ALL the functions
@@ -13,6 +15,23 @@ Registry::Registry()
     rttiMap.insert({ PlayerComp::TypeName, &PlayerComp::CreatePlayerComponent });
     rttiMap.insert({ SpriteComp::TypeName, &SpriteComp::CreateSpriteComponent });
     rttiMap.insert({ RigidbodyComp::TypeName, &RigidbodyComp::CreateRigidBodyComponent });
+}
+
+Registry* Registry::GetPtr()
+{
+    if (!ptr)
+        ptr = new Registry;
+
+    return ptr;
+}
+
+void Registry::DeletePtr()
+{
+    if (ptr)
+    {
+        delete ptr;
+        ptr = nullptr;
+    }
 }
 
 BaseRTTI* Registry::FindAndCreate(const std::string& type, GameObject* owner)

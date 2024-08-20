@@ -10,6 +10,7 @@ class GameObject : public Entity
 private:
 	//GO now will have a container of BaseComponent*
 	std::map<std::string, BaseComponent*> component;
+	std::string name;
 
 public:
 	GameObject();
@@ -32,6 +33,8 @@ public:
 	//GO will have a function to find if it already has a component of ANY TYPE
 	template <typename T>
 	T* GetComponent();
+
+	BaseComponent* GetBase(std::string);
 
 	//GO will have a function to delete ANY TYPE of component
 	template <typename T>

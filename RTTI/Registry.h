@@ -16,14 +16,12 @@ private:
 	Registry(const Registry&) = delete;
 	const Registry& operator =(const Registry&) = delete;
 
+	static Registry* ptr;
+
 public:
-	static Registry& GetInstance()
-	{
-		static Registry instance;
-		return instance;
-	}
+	static Registry* GetPtr();
+	static void DeletePtr();
 
 	// Some interface to find inside me
-	//TODO:
 	BaseRTTI* FindAndCreate(const std::string& type, GameObject* owner);
 };

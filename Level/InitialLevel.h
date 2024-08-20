@@ -8,7 +8,7 @@ namespace level
 	{
 	private:
 		int counter{ 0 };
-		GameObject player;
+		GameObject* player;
 
 	public:
 		void Init() override;
