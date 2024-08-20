@@ -8,6 +8,25 @@
 
 using json = nlohmann::ordered_json;	// Map. Orders the order the variables were declared in
 
+Serializer* Serializer::ptr = nullptr;
+
+Serializer* Serializer::GetPtr()
+{
+	if (!ptr)
+		ptr = new Serializer;
+
+	return ptr;
+}
+
+void Serializer::DeletePtr()
+{
+	if (ptr)
+	{
+		delete ptr;
+		ptr = nullptr;
+	}
+}
+
 void Serializer::LoadLevel(const std::string& filename)
 {
 	// Open file
@@ -47,8 +66,6 @@ void Serializer::LoadLevel(const std::string& filename)
 				BaseRTTI* p = Registry::GetInstance().FindAndCreate(typeName, go);
 				if (p != nullptr)
 					p->LoadFromJson(comp);
-
-				// Add the comp to the GO
 			}
 		}
 	}
@@ -61,7 +78,7 @@ void Serializer::SaveLevel(const std::string& filename)
 	// Counter instead of name as I do not have one
 	int i = 0;
 
-	for (GameObject* go : GameObjectManager::GetGOMPtr()->GetAllObjects())
+	for (GameObject* go : GameObjectManager::GetPtr()->GetAllObjects())
 	{
 		json obj;
 		obj["object"] = i++;

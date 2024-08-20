@@ -3,10 +3,10 @@
 
 GraphicComponent::GraphicComponent(GameObject* _owner) : BaseComponent(_owner) 
 {
-	ComponentManager<GraphicComponent>::GetCMPtr()->AddComp(this);
+	ComponentManager<GraphicComponent>::GetPtr()->AddComp(this);
 }
 
 GraphicComponent::~GraphicComponent()
 {
-	ComponentManager<GraphicComponent>::GetCMPtr()->DelComp(this);
+	ComponentManager<GraphicComponent>::GetPtr()->DelComp(this);
 }

@@ -7,17 +7,15 @@ ResourceManager::~ResourceManager()
     UnloadAllResource();
 }
 
-ResourceManager* ResourceManager::GetRMPtr()
+ResourceManager* ResourceManager::GetPtr()
 {
     if (!ptr)
-    {
         ptr = new ResourceManager;
-    }
 
     return ptr;
 }
 
-void ResourceManager::DeleteRMPtr()
+void ResourceManager::DeletePtr()
 {
     if (ptr)
     {

@@ -27,7 +27,7 @@ template <typename T>
 ComponentManager<T>::~ComponentManager() {}
 
 template <typename T>
-ComponentManager<T>* ComponentManager<T>::GetCMPtr()
+ComponentManager<T>* ComponentManager<T>::GetPtr()
 {
     if (ptr == nullptr)
     {
@@ -38,7 +38,7 @@ ComponentManager<T>* ComponentManager<T>::GetCMPtr()
 }
 
 template <typename T>
-void ComponentManager<T>::DeleteCM()
+void ComponentManager<T>::DeletePtr()
 {
     if (ptr)
     {

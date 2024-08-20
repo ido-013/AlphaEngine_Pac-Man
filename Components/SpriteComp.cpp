@@ -9,7 +9,7 @@ SpriteComp::SpriteComp(GameObject* _owner) : GraphicComponent(_owner), color(), 
 
 SpriteComp::~SpriteComp()
 {
-	ResourceManager::GetRMPtr()->UnloadResource(textureName);
+	ResourceManager::GetPtr()->UnloadResource(textureName);
 }
 
 void SpriteComp::Update()
@@ -68,7 +68,7 @@ void SpriteComp::SetColor(const unsigned char& r, const unsigned char& g, const 
 void SpriteComp::SetTexture(std::string name)
 {
 	textureName = name;
-	tex = ResourceManager::GetRMPtr()->GetResource<AEGfxTexture>(name);
+	tex = ResourceManager::GetPtr()->GetResource<AEGfxTexture>(name);
 }
 
 void SpriteComp::LoadFromJson(const json& data)

@@ -37,8 +37,8 @@ private:
 	};
 
 public:
-	static ResourceManager* GetRMPtr();
-	static void DeleteRMPtr();
+	static ResourceManager* GetPtr();
+	static void DeletePtr();
 
 	//Get<T>(name) fn that returns a T* to the data allocated in the resource with that name
 	template <typename T>

@@ -3,10 +3,10 @@
 
 LogicComponent::LogicComponent(GameObject* _owner) : BaseComponent(_owner)
 {
-	ComponentManager<LogicComponent>::GetCMPtr()->AddComp(this);
+	ComponentManager<LogicComponent>::GetPtr()->AddComp(this);
 }
 
 LogicComponent::~LogicComponent()
 {
-	ComponentManager<LogicComponent>::GetCMPtr()->DelComp(this);
+	ComponentManager<LogicComponent>::GetPtr()->DelComp(this);
 }

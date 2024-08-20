@@ -7,6 +7,7 @@
 #include "../Components/PlayerComp.h"
 #include "../Components/AudioComp.h"
 #include "../Serializer/Serializer.h"
+#include "../Prefab/Prefab.h"
 
 void level::InitialLevel::Init()
 {
@@ -20,7 +21,8 @@ void level::InitialLevel::Init()
 	player.GetComponent<SpriteComp>()->SetTexture("Assets/PlanetTexture.png");
 	player.GetComponent<AudioComp>()->SetAudio("Assets/bouken.mp3");
 
-	Serializer::GetInstance().SaveLevel("test.json");
+	Serializer::GetPtr()->SaveLevel("test.json");
+	Prefab::SavePrefab("prefab", &player);
 }
 
 void level::InitialLevel::Update()

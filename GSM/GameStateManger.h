@@ -24,10 +24,10 @@ namespace GSM
 		//	Functions that anyone can access to:
 	public:
 		//	GetSingleton
-		static GameStateManager* GetGSMPtr();
+		static GameStateManager* GetPtr();
 		
 		//	DeleteSingleton
-		static void DeleteGSM();
+		static void DeletePtr();
 
 		///////////////////////////////
 	private:	

@@ -6,15 +6,15 @@
 
 AudioComp::AudioComp(GameObject* owner) : BaseComponent(owner), group(), audio(), audioName()
 {
-	ComponentManager<AudioComp>::GetCMPtr()->AddComp(this);
+	ComponentManager<AudioComp>::GetPtr()->AddComp(this);
 	group = AEAudioCreateGroup();
 }
 
 AudioComp::~AudioComp()  
 {
 	AEAudioUnloadAudioGroup(group);
-	ResourceManager::GetRMPtr()->UnloadResource(audioName);
-	ComponentManager<AudioComp>::GetCMPtr()->DelComp(this);
+	ResourceManager::GetPtr()->UnloadResource(audioName);
+	ComponentManager<AudioComp>::GetPtr()->DelComp(this);
 }
 
 void AudioComp::Update()
@@ -74,7 +74,7 @@ void AudioComp::SetAudio(std::string _name)
 {
 	audioName = _name;
 	//ResourceManager::GetRMPtr()->UnloadResource(s);
-	audio = *ResourceManager::GetRMPtr()->GetResource<AEAudio>(_name);
+	audio = *ResourceManager::GetPtr()->GetResource<AEAudio>(_name);
 }
 
 void AudioComp::UnloadAudio()

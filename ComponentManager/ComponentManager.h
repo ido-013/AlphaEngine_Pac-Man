@@ -28,8 +28,8 @@ private:
 	std::list<T*> component;
 
 public:
-	static ComponentManager* GetCMPtr();
-	static void DeleteCM();
+	static ComponentManager* GetPtr();
+	static void DeletePtr();
 
 	void AddComp(T* comp);
 	void DelComp(T* comp);

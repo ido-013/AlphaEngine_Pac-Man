@@ -121,7 +121,6 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q</C
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Prefab\Prefab.cpp" />
     <ClCompile Include="Resource\AudioResource.cpp" />
-    <ClCompile Include="Resource\PrefabResource.cpp" />
     <ClCompile Include="Resource\Resource.cpp" />
     <ClCompile Include="ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="Resource\TextureResource.cpp" />
@@ -153,7 +152,6 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q</C
     <ClInclude Include="Level\TransformTest.h" />
     <ClInclude Include="Prefab\Prefab.h" />
     <ClInclude Include="Resource\AudioResource.h" />
-    <ClInclude Include="Resource\PrefabResource.h" />
     <ClInclude Include="Resource\Resource.h" />
     <ClInclude Include="ResourceManager\ResourceManager.h" />
     <ClInclude Include="Resource\TextureResource.h" />

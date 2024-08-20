@@ -10,7 +10,7 @@ GameObjectManager::~GameObjectManager()
 {
 }
 
-GameObjectManager* GameObjectManager::GetGOMPtr()
+GameObjectManager* GameObjectManager::GetPtr()
 {
 	if (ptr == nullptr)
 	{
@@ -20,7 +20,7 @@ GameObjectManager* GameObjectManager::GetGOMPtr()
 	return ptr;
 }
 
-void GameObjectManager::DeleteGOM()
+void GameObjectManager::DeletePtr()
 {
 	if (ptr)
 	{

@@ -1,16 +1,27 @@
 #pragma once
 #include <string>
+#include <fstream>
 #include <list>
+#include "json.hpp"
 #include "../GameObject/GameObject.h"
+#include "../ComponentManager/BaseComponent.h"
+#include "../RTTI/Registry.h"
+
+using json = nlohmann::ordered_json;
 
 class Prefab
 {
 private:
 	std::string name;
-	std::list<BaseComponent*> component;
+	json* data;
+
+	void LoadPrefab();
 
 public:
-	Prefab(GameObject*);
-	void SavePrefab(const std::string& filename);
-	Prefab* LoadPrefab(const std::string& filename);
+	Prefab(std::string _name);
+	~Prefab();
+
+	static void SavePrefab(const std::string& _name, GameObject* obj);
+	
+	GameObject* NewGameObject();
 };

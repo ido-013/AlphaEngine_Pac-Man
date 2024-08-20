@@ -22,7 +22,7 @@ GSM::GameStateManager::~GameStateManager()
         delete currentLevel;
 }
 
-GSM::GameStateManager* GSM::GameStateManager::GetGSMPtr()
+GSM::GameStateManager* GSM::GameStateManager::GetPtr()
 {
     if (ptr == nullptr)
     {
@@ -32,7 +32,7 @@ GSM::GameStateManager* GSM::GameStateManager::GetGSMPtr()
     return ptr;
 }
 
-void GSM::GameStateManager::DeleteGSM()
+void GSM::GameStateManager::DeletePtr()
 {
     if (ptr)
     {
@@ -53,10 +53,10 @@ void GSM::GameStateManager::Update()
 {
     if (currentLevel)
     {
-        ComponentManager<LogicComponent>::GetCMPtr()->Update();
-        ComponentManager<EngineComponent>::GetCMPtr()->Update();
-        ComponentManager<GraphicComponent>::GetCMPtr()->Update();
-        ComponentManager<AudioComp>::GetCMPtr()->Update();
+        ComponentManager<LogicComponent>::GetPtr()->Update();
+        ComponentManager<EngineComponent>::GetPtr()->Update();
+        ComponentManager<GraphicComponent>::GetPtr()->Update();
+        ComponentManager<AudioComp>::GetPtr()->Update();
 
         EventManager::GetPtr()->DispatchAllEvents();
 
@@ -72,10 +72,10 @@ void GSM::GameStateManager::Exit()
 {
     if (currentLevel)
     {
-        ComponentManager<LogicComponent>::DeleteCM();
-        ComponentManager<EngineComponent>::DeleteCM();
-        ComponentManager<GraphicComponent>::DeleteCM();
-        ComponentManager<AudioComp>::DeleteCM();
+        ComponentManager<LogicComponent>::DeletePtr();
+        ComponentManager<EngineComponent>::DeletePtr();
+        ComponentManager<GraphicComponent>::DeletePtr();
+        ComponentManager<AudioComp>::DeletePtr();
 
         EventManager::DeletePtr();
         CollisionManager::DeletePtr();

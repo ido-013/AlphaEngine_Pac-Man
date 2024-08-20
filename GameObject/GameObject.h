@@ -38,6 +38,7 @@ public:
 	void DeleteComponent();
 
 	friend class Serializer;
+	friend class Prefab;
 };
 
 #include "GameObject.inl"

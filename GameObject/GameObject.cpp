@@ -5,7 +5,7 @@
 
 GameObject::GameObject() : component()
 {
-	GameObjectManager::GetGOMPtr()->AddObject(this);
+	GameObjectManager::GetPtr()->AddObject(this);
 }
 
 GameObject::~GameObject()
