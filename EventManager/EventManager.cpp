@@ -1,29 +1,11 @@
 #include "EventManager.h"
 #include <iostream>
 
-EventManager* EventManager::ptr = nullptr;
-
 EventManager::EventManager() {}
 
-EventManager::~EventManager() {}
-
-EventManager* EventManager::GetPtr()
+EventManager::~EventManager() 
 {
-    if (ptr == nullptr)
-    {
-        ptr = new EventManager;
-    }
-
-    return ptr;
-}
-
-void EventManager::DeletePtr()
-{
-    if (ptr)
-    {
-        delete ptr;
-        ptr = nullptr;
-    }
+    DeleteUndispahchEvent();
 }
 
 void EventManager::DispatchAllEvents()

@@ -21,7 +21,6 @@ inline T* ResourceManager::GetResource(const std::string& filename)
 		case png:
 		case jpg:
 		{
-			//create a TextureResource
 			if (typeName != "struct AEGfxTexture")
 				break;
 			res = new TextureResource;
@@ -32,7 +31,6 @@ inline T* ResourceManager::GetResource(const std::string& filename)
 		{
 			if (typeName != "struct AEAudio")
 				break;
-			//create a AudioResource
 			res = new AudioResource;
 			break;
 		}

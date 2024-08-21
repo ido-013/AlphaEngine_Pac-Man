@@ -30,12 +30,12 @@ TransformComp::TransformComp(GameObject* _owner) : EngineComponent(_owner), pos(
 
 	CalculateMatrix();
 
-	CollisionManager::GetPtr()->AddTrans(this);
+	CollisionManager::GetInstance().AddTrans(this);
 }
 
 TransformComp::~TransformComp()
 {
-	CollisionManager::GetPtr()->DelTrans(this);
+	CollisionManager::GetInstance().DelTrans(this);
 }
 
 void TransformComp::Update()

@@ -14,8 +14,11 @@ private:
 	static Serializer* ptr;
 
 public:
-	static Serializer* GetPtr();
-	static void DeletePtr();
+	static Serializer& GetInstance()
+	{
+		static Serializer instance;
+		return instance;
+	}
 
 	void LoadLevel(const std::string& filename);
 	void SaveLevel(const std::string& filename);

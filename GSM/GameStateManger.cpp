@@ -8,8 +8,10 @@
 #include "../Components/AudioComp.h"
 #include "../EventManager/EventManager.h"
 #include "../CollisionManager/CollisionManager.h"
-
-GSM::GameStateManager* GSM::GameStateManager::ptr = nullptr;
+#include "../GameObjectManager/GameObjectManager.h"
+#include "../ResourceManager/ResourceManager.h"
+#include "../Serializer/Serializer.h"
+#include "../RTTI/Registry.h"
 
 GSM::GameStateManager::GameStateManager() : previousLevel(nullptr), currentLevel(nullptr) {}
 
@@ -20,25 +22,6 @@ GSM::GameStateManager::~GameStateManager()
 
     if (currentLevel)
         delete currentLevel;
-}
-
-GSM::GameStateManager* GSM::GameStateManager::GetPtr()
-{
-    if (ptr == nullptr)
-    {
-        ptr = new GameStateManager;
-    }
-
-    return ptr;
-}
-
-void GSM::GameStateManager::DeletePtr()
-{
-    if (ptr)
-    {
-        delete ptr;
-        ptr = nullptr;
-    }
 }
 
 void GSM::GameStateManager::Init()
@@ -53,14 +36,14 @@ void GSM::GameStateManager::Update()
 {
     if (currentLevel)
     {
-        ComponentManager<LogicComponent>::GetPtr()->Update();
-        ComponentManager<EngineComponent>::GetPtr()->Update();
-        ComponentManager<GraphicComponent>::GetPtr()->Update();
-        ComponentManager<AudioComp>::GetPtr()->Update();
+        ComponentManager<LogicComponent>::GetInstance().Update();
+        ComponentManager<EngineComponent>::GetInstance().Update();
+        ComponentManager<GraphicComponent>::GetInstance().Update();
+        ComponentManager<AudioComp>::GetInstance().Update();
 
-        EventManager::GetPtr()->DispatchAllEvents();
+        EventManager::GetInstance().DispatchAllEvents();
 
-        CollisionManager::GetPtr()->Update();
+        CollisionManager::GetInstance().Update();
 
         AEGfxSetBackgroundColor(0, 0, 0);
 
@@ -72,14 +55,6 @@ void GSM::GameStateManager::Exit()
 {
     if (currentLevel)
     {
-        ComponentManager<LogicComponent>::DeletePtr();
-        ComponentManager<EngineComponent>::DeletePtr();
-        ComponentManager<GraphicComponent>::DeletePtr();
-        ComponentManager<AudioComp>::DeletePtr();
-
-        EventManager::DeletePtr();
-        CollisionManager::DeletePtr();
-
         currentLevel->Exit();
     }
 }

@@ -12,9 +12,8 @@
 void level::InitialLevel::Init()
 {
 	Prefab p("test");
-	player = p.NewGameObject();
-
-	Serializer::GetPtr()->SaveLevel("test.json");
+	GameObject* player = p.NewGameObject();
+	Serializer::GetInstance().SaveLevel("test.json");
 }
 
 void level::InitialLevel::Update()
@@ -24,5 +23,4 @@ void level::InitialLevel::Update()
 
 void level::InitialLevel::Exit()
 {
-	delete player;
 }

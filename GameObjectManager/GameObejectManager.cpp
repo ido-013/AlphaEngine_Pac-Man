@@ -1,31 +1,15 @@
 #include "GameObjectManager.h"
 
-GameObjectManager* GameObjectManager::ptr = nullptr;
-
 GameObjectManager::GameObjectManager()
 {
 }
 
 GameObjectManager::~GameObjectManager()
 {
-}
-
-GameObjectManager* GameObjectManager::GetPtr()
-{
-	if (ptr == nullptr)
+	for (GameObject* it : objects)
 	{
-		ptr = new GameObjectManager;
-	}
-
-	return ptr;
-}
-
-void GameObjectManager::DeletePtr()
-{
-	if (ptr)
-	{
-		delete ptr;
-		ptr = nullptr;
+		if (it)
+			delete it;
 	}
 }
 

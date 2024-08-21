@@ -6,15 +6,15 @@
 
 AudioComp::AudioComp(GameObject* owner) : BaseComponent(owner), group(), audio(), audioName()
 {
-	ComponentManager<AudioComp>::GetPtr()->AddComp(this);
+	ComponentManager<AudioComp>::GetInstance().AddComp(this);
 	group = AEAudioCreateGroup();
 }
 
 AudioComp::~AudioComp()  
 {
 	AEAudioUnloadAudioGroup(group);
-	ResourceManager::GetPtr()->UnloadResource(audioName);
-	ComponentManager<AudioComp>::GetPtr()->DelComp(this);
+	ResourceManager::GetInstance().UnloadResource(audioName);
+	ComponentManager<AudioComp>::GetInstance().DelComp(this);
 }
 
 void AudioComp::Update()
@@ -73,8 +73,7 @@ json AudioComp::SaveToJson()
 void AudioComp::SetAudio(std::string _name)
 {
 	audioName = _name;
-	//ResourceManager::GetRMPtr()->UnloadResource(s);
-	audio = *ResourceManager::GetPtr()->GetResource<AEAudio>(_name);
+	audio = *ResourceManager::GetInstance().GetResource<AEAudio>(_name);
 }
 
 void AudioComp::UnloadAudio()

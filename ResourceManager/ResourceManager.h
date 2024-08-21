@@ -17,8 +17,6 @@ private:
 
 	std::map<std::string, Resource*> resources;
 
-	static ResourceManager* ptr;
-
 	enum fileExt
 	{
 		unvalid,
@@ -37,8 +35,11 @@ private:
 	};
 
 public:
-	static ResourceManager* GetPtr();
-	static void DeletePtr();
+	static ResourceManager& GetInstance()
+	{
+		static ResourceManager instance;
+		return instance;
+	}
 
 	//Get<T>(name) fn that returns a T* to the data allocated in the resource with that name
 	template <typename T>

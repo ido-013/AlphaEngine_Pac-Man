@@ -19,8 +19,11 @@ private:
 public:
 	std::list<GameObject*>& GetAllObjects() { return objects; }
 
-	static GameObjectManager* GetPtr();
-	static void DeletePtr();
+	static GameObjectManager& GetInstance()
+	{
+		static GameObjectManager instance;
+		return instance;
+	}
 
 	void AddObject(GameObject* obj);
 	void RemoveObject(GameObject* obj);

@@ -1,5 +1,5 @@
 #pragma once
-#include <list>
+#include <vector>
 
 /////////////Manager class//////////////
 //
@@ -23,18 +23,21 @@ private:
 	const ComponentManager& operator=(const ComponentManager& other) = delete;
 	~ComponentManager();
 
-	static ComponentManager* ptr;
-
-	std::list<T*> component;
+	std::vector<T*> component;
 
 public:
-	static ComponentManager* GetPtr();
-	static void DeletePtr();
+	static ComponentManager& GetInstance()
+	{
+		static ComponentManager instance;
+		return instance;
+	};
 
 	void AddComp(T* comp);
 	void DelComp(T* comp);
 
 	void Update();
+
+	friend T;
 };
 
 #include "ComponentManager.inl"

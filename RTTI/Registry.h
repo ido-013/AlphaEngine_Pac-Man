@@ -19,8 +19,11 @@ private:
 	static Registry* ptr;
 
 public:
-	static Registry* GetPtr();
-	static void DeletePtr();
+	static Registry& GetInstance()
+	{
+		static Registry instance;
+		return instance;
+	}
 
 	// Some interface to find inside me
 	BaseRTTI* FindAndCreate(const std::string& type, GameObject* owner);

@@ -1,31 +1,15 @@
 #include "ResourceManager.h"
 
-ResourceManager* ResourceManager::ptr = nullptr;
-
 ResourceManager::~ResourceManager() 
 {
     UnloadAllResource();
 }
 
-ResourceManager* ResourceManager::GetPtr()
-{
-    if (!ptr)
-        ptr = new ResourceManager;
-
-    return ptr;
-}
-
-void ResourceManager::DeletePtr()
-{
-    if (ptr)
-    {
-        delete ptr;
-        ptr = nullptr;
-    }
-}
-
 void ResourceManager::UnloadResource(const std::string& filename)
 {
+    if (resources.empty())
+        return;
+
     auto it = resources.find(filename);
 
     if (it != resources.end())

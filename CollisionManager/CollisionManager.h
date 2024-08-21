@@ -20,8 +20,12 @@ private:
 	bool isCollision(TransformComp*, TransformComp*) const;
 
 public:
-	static CollisionManager* GetPtr();
-	static void DeletePtr();
+	static CollisionManager& GetInstance()
+	{
+		static CollisionManager instance;
+		return instance;
+	}
+
 	void AddTrans(TransformComp* trans);
 	void DelTrans(TransformComp* trans);
 

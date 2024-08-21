@@ -10,25 +10,6 @@
 
 using json = nlohmann::ordered_json;	// Map. Orders the order the variables were declared in
 
-Serializer* Serializer::ptr = nullptr;
-
-Serializer* Serializer::GetPtr()
-{
-	if (!ptr)
-		ptr = new Serializer;
-
-	return ptr;
-}
-
-void Serializer::DeletePtr()
-{
-	if (ptr)
-	{
-		delete ptr;
-		ptr = nullptr;
-	}
-}
-
 void Serializer::LoadLevel(const std::string& filename)
 {
 	// Open file
@@ -77,13 +58,13 @@ void Serializer::SaveLevel(const std::string& filename)
 	// Counter instead of name as I do not have one
 	int i = 0;
 
-	for (GameObject* go : GameObjectManager::GetPtr()->GetAllObjects())
+	for (GameObject* go : GameObjectManager::GetInstance().GetAllObjects())
 	{
 		json obj;
 		obj["object"] = go->name;
 
 		json components;
-		components.push_back(go->GetComponent<TransformComp>()->SaveToJson());
+		//components.push_back(go->GetComponent<TransformComp>()->SaveToJson());
 		obj["components"] = components;
 
 		allData.push_back(obj);

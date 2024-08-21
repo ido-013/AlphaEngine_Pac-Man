@@ -31,21 +31,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Changing the window title
 	AESysSetWindowTitle("My New Demo!");
 
-	GSM::GameStateManager* gsm = GSM::GameStateManager::GetPtr();
+	GSM::GameStateManager& gsm = GSM::GameStateManager::GetInstance();
 
 	// reset the system modules
 	AESysReset();
 
-	GSM::GameStateManager::GetPtr()->ChangeLevel(new level::TestLevel);
+	GSM::GameStateManager::GetInstance().ChangeLevel(new level::InitialLevel);
 
 	// Game Loop
-	while (gsm->ShouldExit() == false && gGameRunning)
+	while (gsm.ShouldExit() == false && gGameRunning)
 	{
 		// Informing the system about the loop's start
 		AESysFrameStart();
 
 		// Your own update logic goes here
-		gsm->Update();
+		gsm.Update();
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();
@@ -55,9 +55,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			gGameRunning = 0;
 	}
 
-	gsm->Exit();
-	
-	GSM::GameStateManager::DeletePtr();
+	gsm.Exit();
 
 	// free the system
 	AESysExit();

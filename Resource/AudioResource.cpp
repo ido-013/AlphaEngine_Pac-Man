@@ -7,17 +7,12 @@ AudioResource::~AudioResource()
 
 void AudioResource::LoadData(const std::string& name)
 {
-	data = new AEAudio;
-	*(static_cast<AEAudio*>(data)) = AEAudioLoadMusic(name.c_str());
+	audio = AEAudioLoadMusic(name.c_str());
+	data = &audio;
 }
 
 void AudioResource::UnloadData()
 {
-	if (data)
-	{
-		AEAudioUnloadAudio(*(static_cast<AEAudio*>(data)));
-		delete data;
-	}
-
+	//AEAudioUnloadMusic(audio);
 	data = nullptr;
 }

@@ -1,8 +1,6 @@
 #include "CollisionManager.h"
 #include "AEEngine.h"
 
-CollisionManager* CollisionManager::ptr = nullptr;
-
 CollisionManager::CollisionManager() {}
 
 CollisionManager::~CollisionManager()
@@ -30,25 +28,6 @@ bool CollisionManager::isCollision(TransformComp* a, TransformComp* b) const
 	return true;
 }
 
-CollisionManager* CollisionManager::GetPtr()
-{
-    if (ptr == nullptr)
-    {
-        ptr = new CollisionManager;
-    }
-
-    return ptr;
-}
-
-void CollisionManager::DeletePtr()
-{
-    if (ptr)
-    {
-        delete ptr;
-        ptr = nullptr;
-    }
-}
-
 void CollisionManager::AddTrans(TransformComp* trans)
 {
 	transformList.push_back(trans);
@@ -68,7 +47,7 @@ void CollisionManager::DelTrans(TransformComp* trans)
 
 void CollisionManager::Update()
 {
-	EventManager* em = EventManager::GetPtr();
+	EventManager& em = EventManager::GetInstance();
 
 	for (int i = 0; i < transformList.size() - 1; i++)
 	{
@@ -79,8 +58,8 @@ void CollisionManager::Update()
 
 			if (isCollision(a, b))
 			{
-				em->AddEvent<CollisionEvent>(a->GetOwner(), b->GetOwner());
-				em->AddEvent<CollisionEvent>(b->GetOwner(), a->GetOwner());
+				em.AddEvent<CollisionEvent>(a->GetOwner(), b->GetOwner());
+				em.AddEvent<CollisionEvent>(b->GetOwner(), a->GetOwner());
 			}
 		}
 	}

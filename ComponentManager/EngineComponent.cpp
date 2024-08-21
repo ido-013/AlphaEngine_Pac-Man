@@ -3,10 +3,10 @@
 
 EngineComponent::EngineComponent(GameObject* _owner) : BaseComponent(_owner) 
 {
-	ComponentManager<EngineComponent>::GetPtr()->AddComp(this);
+	ComponentManager<EngineComponent>::GetInstance().AddComp(this);
 }
 
 EngineComponent::~EngineComponent()
 {
-	ComponentManager<EngineComponent>::GetPtr()->DelComp(this);
+	ComponentManager<EngineComponent>::GetInstance().DelComp(this);
 }

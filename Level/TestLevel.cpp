@@ -9,7 +9,7 @@ GameObject* b = nullptr;
 
 void level::TestLevel::Init()
 {
-	Serializer::GetPtr()->LoadLevel("test.json");
+	Serializer::GetInstance().LoadLevel("test.json");
 	//Prefab p("test");
 	//a = p.NewGameObject();
 	//b = p.NewGameObject();
@@ -25,6 +25,5 @@ void level::TestLevel::Update()
 
 void level::TestLevel::Exit()
 {
-	delete a;
-	delete b;
+
 }

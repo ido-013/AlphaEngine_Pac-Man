@@ -26,12 +26,11 @@ private:
 	static EventManager* ptr;
 
 public:
-	//Interface:
-	//	GetSingleton
-	static EventManager* GetPtr();
-
-	//	DeleteSingleton
-	static void DeletePtr();
+	static EventManager& GetInstance()
+	{
+		static EventManager instance;
+		return instance;
+	}
 
 	// Add an event (event*) this are pointers to dynamic memory, called as the following: AddEvent(new Event);
 	template <typename T>
