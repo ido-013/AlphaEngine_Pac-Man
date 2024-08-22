@@ -1,13 +1,18 @@
-#include "AEEngine.h"
 #include "PlayerComp.h"
+#include "AEEngine.h"
 #include "TransformComp.h"
 #include "RigidbodyComp.h"
 #include "../Event/CollisionEvent.h"
-#include "../GSM/GameStateManger.h"
 
 PlayerComp::PlayerComp(GameObject* _owner) : LogicComponent(_owner)
 {
 	
+}
+
+void PlayerComp::AddScore(int _score)
+{
+	score += _score;
+	std::cout << score << std::endl;
 }
 
 void PlayerComp::Update()
@@ -18,43 +23,41 @@ void PlayerComp::Update()
 	RigidbodyComp* r = owner->GetComponent<RigidbodyComp>();
 	if (!r) return;
 
-	//Check for input
-	bool flag = false;
-
-	if (AEInputCheckCurr(AEVK_W))
-	{
-		r->AddAcceleration(0, speed);
-		flag = true;
+	if (AEInputCheckCurr(AEVK_W) && dir != DOWN && dir != UP && !wall[UP])
+	{	
+		t->SetRot(PI / 2);
+		t->SetPos({ targetX, targetY });
+		dir = UP;
 	}
-	if (AEInputCheckCurr(AEVK_S))
+	if (AEInputCheckCurr(AEVK_S) && dir != UP && dir != DOWN && !wall[DOWN])
 	{
-		r->AddAcceleration(0, -speed);
-		flag = true;
+		t->SetRot(-PI / 2);
+		t->SetPos({ targetX, targetY });
+		dir = DOWN;
 	}
-	if (AEInputCheckCurr(AEVK_A))
+	if (AEInputCheckCurr(AEVK_A) && dir != RIGHT && dir != LEFT && !wall[LEFT])
 	{
-		r->AddAcceleration(-speed, 0);
-		flag = true;
+		t->SetRot(PI);
+		t->SetPos({ targetX, targetY });
+		dir = LEFT;
 	}
-	if (AEInputCheckCurr(AEVK_D))
+	if (AEInputCheckCurr(AEVK_D) && dir != LEFT && dir != RIGHT && !wall[RIGHT])
 	{
-		r->AddAcceleration(speed, 0);
-		flag = true;
-	}
-
-	if (AEInputCheckCurr(AEVK_SPACE) || !flag)
-	{
-		r->ClearAcceleration();
+		t->SetRot(0);
+		t->SetPos({ targetX, targetY });
+		dir = RIGHT;
 	}
 
-	if (AEInputCheckCurr(AEVK_Q))
-	{
-		t->SetRot(t->GetRot() - 0.5f);
-	}
-	if (AEInputCheckCurr(AEVK_E))
-	{
-		t->SetRot(t->GetRot() + 0.5f);
-	}
+	if (abs(targetX - t->GetPos().x) < 1 &&
+		abs(targetY - t->GetPos().y) < 1 &&
+		((dir == UP && wall[UP]) ||
+		(dir == DOWN && wall[DOWN]) ||
+		(dir == RIGHT && wall[RIGHT]) ||
+		(dir == LEFT && wall[LEFT])))
+		r->ClearVelocity();
+
+	else
+		r->SetVelocity(dx[dir] * speed, dy[dir] * speed);
 }
 
 void PlayerComp::LoadFromJson(const json& data)

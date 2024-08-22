@@ -24,6 +24,7 @@ void GameObjectManager::RemoveObject(GameObject* obj)
 	{
 		if (*it == obj)
 		{
+			delete *it;
 			objects.erase(it);
 			return;
 		}

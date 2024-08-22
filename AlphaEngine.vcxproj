@@ -128,6 +128,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q</C
     <ClCompile Include="Resource\TextureResource.cpp" />
     <ClCompile Include="RTTI\Registry.cpp" />
     <ClCompile Include="Serializer\Serializer.cpp" />
+    <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation\Animation.h" />
@@ -136,6 +137,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q</C
     <ClInclude Include="ComponentManager\ComponentManager.h" />
     <ClInclude Include="ComponentManager\EngineComponent.h" />
     <ClInclude Include="Components\AnimatorComp.h" />
+    <ClInclude Include="Event\DestroyEvent.h" />
     <ClInclude Include="GameObject\GameObject.h" />
     <ClInclude Include="ComponentManager\GraphicComponent.h" />
     <ClInclude Include="ComponentManager\LogicComponent.h" />
@@ -154,6 +156,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q</C
     <ClInclude Include="Level\InitialLevel.h" />
     <ClInclude Include="Level\TestLevel.h" />
     <ClInclude Include="Level\TransformTest.h" />
+    <ClInclude Include="Map\Map.h" />
     <ClInclude Include="Prefab\Prefab.h" />
     <ClInclude Include="Resource\AudioResource.h" />
     <ClInclude Include="Resource\Resource.h" />
@@ -162,6 +165,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q</C
     <ClInclude Include="RTTI\BaseRTTI.h" />
     <ClInclude Include="RTTI\Registry.h" />
     <ClInclude Include="Serializer\Serializer.h" />
+    <ClInclude Include="Utils\Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ComponentManager\ComponentManager.inl" />

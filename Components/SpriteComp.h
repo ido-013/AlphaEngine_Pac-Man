@@ -26,6 +26,7 @@ private:
 
 	//texture
 	AEGfxTexture* tex = nullptr;
+	AEGfxVertexList* mesh;
 
 	//Render mode?
 	//Blend mode?

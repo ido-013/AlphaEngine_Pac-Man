@@ -2,6 +2,9 @@
 #include "../ComponentManager/BaseComponent.h"
 #include "../GameObjectManager/GameObjectManager.h"
 #include "../Event/CollisionEvent.h"
+#include "../Event/DestroyEvent.h"
+#include "../Components/PlayerComp.h"
+#include "../EventManager/EventManager.h"
 
 GameObject::GameObject() : component()
 {
@@ -25,7 +28,22 @@ void GameObject::OnEvent(Event* event)
 	{
 		if (dynamic_cast<CollisionEvent*>(event) != nullptr)
 		{
-			
+			if (event->src->GetType() == Entity::Coin)
+			{
+				GetComponent<PlayerComp>()->AddScore(10);
+				EventManager::GetInstance().AddEvent<DestroyEvent>(event->dst, event->src);
+			}
+		}
+	}
+
+	if (GetType() == Entity::Coin)
+	{
+		if (dynamic_cast<DestroyEvent*>(event) != nullptr)
+		{
+			if (event->src->GetType() == Entity::Player)
+			{
+				GameObjectManager::GetInstance().RemoveObject(this);
+			}
 		}
 	}
 }

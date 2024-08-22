@@ -11,6 +11,9 @@
 // ---------------------------------------------------------------------------
 // main
 
+const int windowWidth = 900;
+const int windowHeight = 900;
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,
@@ -26,7 +29,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	// Initialization of your own variables go here
 
 	// Using custom window procedure
-	AESysInit(hInstance, nCmdShow, 1600, 900, 1, 60, true, NULL);
+	AESysInit(hInstance, nCmdShow, windowWidth, windowHeight, 1, 60, true, NULL);
 
 	// Changing the window title
 	AESysSetWindowTitle("My New Demo!");

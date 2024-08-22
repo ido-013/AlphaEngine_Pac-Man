@@ -35,6 +35,18 @@ void RigidbodyComp::AddVelocity(float x, float y)
 	velocity.y += y;
 }
 
+void RigidbodyComp::SetVelocity(const AEVec2& other)
+{
+	velocity.x = other.x;
+	velocity.y = other.y;
+}
+
+void RigidbodyComp::SetVelocity(float x, float y)
+{
+	velocity.x = x;
+	velocity.y = y;
+}
+
 void RigidbodyComp::ClearVelocity()
 {
 	velocity.x = 0;

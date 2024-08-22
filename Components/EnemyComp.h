@@ -2,7 +2,7 @@
 #include "../ComponentManager/LogicComponent.h"
 #include "../Event/Entity.h"
 
-class PlayerComp : public LogicComponent
+class EnemyComp : public LogicComponent
 {
 public:
 	enum direction
@@ -21,17 +21,15 @@ private:
 	int dx[4] = { 0, 1, 0, -1 };
 	int dy[4] = { 1, 0, -1, 0 };
 	float speed = 500;
-	int score = 0;
 	direction dir = RIGHT;
 
 public:
-	PlayerComp(GameObject* _owner);
-	void AddScore(int _score); 
+	EnemyComp(GameObject* _owner);
 	void Update() override;
 
 	void LoadFromJson(const json&) override;
 	json SaveToJson() override;
 
-	static BaseRTTI* CreatePlayerComponent(GameObject* owner);
-	static constexpr const char* TypeName = "PlayerComp";
+	static BaseRTTI* CreateEnemyComponent(GameObject* owner);
+	static constexpr const char* TypeName = "EnemyComp";
 };

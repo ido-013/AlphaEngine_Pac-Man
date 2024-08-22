@@ -64,7 +64,7 @@ void Serializer::SaveLevel(const std::string& filename)
 		obj["object"] = go->name;
 
 		json components;
-		//components.push_back(go->GetComponent<TransformComp>()->SaveToJson());
+		components.push_back(go->GetComponent<TransformComp>()->SaveToJson());
 		obj["components"] = components;
 
 		allData.push_back(obj);

@@ -8,7 +8,9 @@ public:
 	{
 		Player = 0,
 		Coin = 1,
-		Flag = 2
+		Flag = 2,
+		Wall = 3,
+		Enemy = 4,
 	};
 
 	virtual void OnEvent(Event* event) = 0;
