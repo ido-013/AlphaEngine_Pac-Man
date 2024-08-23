@@ -11,6 +11,7 @@ public:
 		Flag = 2,
 		Wall = 3,
 		Enemy = 4,
+		Super = 5,
 	};
 
 	virtual void OnEvent(Event* event) = 0;

@@ -2,7 +2,11 @@
 #include "AEEngine.h"
 #include "TransformComp.h"
 #include "RigidbodyComp.h"
+#include "SpriteComp.h"
 #include "../Event/CollisionEvent.h"
+#include "../Utils/Utils.h"
+#include "../GSM/GameStateManger.h"
+#include "../Level/GameOver.h"
 
 PlayerComp::PlayerComp(GameObject* _owner) : LogicComponent(_owner)
 {
@@ -12,7 +16,6 @@ PlayerComp::PlayerComp(GameObject* _owner) : LogicComponent(_owner)
 void PlayerComp::AddScore(int _score)
 {
 	score += _score;
-	std::cout << score << std::endl;
 }
 
 void PlayerComp::Update()
@@ -23,33 +26,51 @@ void PlayerComp::Update()
 	RigidbodyComp* r = owner->GetComponent<RigidbodyComp>();
 	if (!r) return;
 
+	SpriteComp* s = owner->GetComponent<SpriteComp>();
+	if (!s) return;
+
+	if (superMode)
+	{
+		static float time = 0;
+		time += AEFrameRateControllerGetFrameTime();
+
+		s->SetColor(0, 0, 255);
+		speed = 200;
+
+		if (time > 5)
+		{
+			superMode = false;
+			s->SetColor(255, 255, 255);
+			speed = 100;
+			time = 0;
+		}
+	}
+
 	if (AEInputCheckCurr(AEVK_W) && dir != DOWN && dir != UP && !wall[UP])
 	{	
-		t->SetRot(PI / 2);
 		t->SetPos({ targetX, targetY });
 		dir = UP;
 	}
 	if (AEInputCheckCurr(AEVK_S) && dir != UP && dir != DOWN && !wall[DOWN])
 	{
-		t->SetRot(-PI / 2);
 		t->SetPos({ targetX, targetY });
 		dir = DOWN;
 	}
 	if (AEInputCheckCurr(AEVK_A) && dir != RIGHT && dir != LEFT && !wall[LEFT])
 	{
-		t->SetRot(PI);
 		t->SetPos({ targetX, targetY });
 		dir = LEFT;
 	}
 	if (AEInputCheckCurr(AEVK_D) && dir != LEFT && dir != RIGHT && !wall[RIGHT])
 	{
-		t->SetRot(0);
 		t->SetPos({ targetX, targetY });
 		dir = RIGHT;
 	}
 
-	if (abs(targetX - t->GetPos().x) < 1 &&
-		abs(targetY - t->GetPos().y) < 1 &&
+	t->SetRot((PI / 2) * dir);
+
+	if (abs(targetX - t->GetPos().x) < 10 &&
+		abs(targetY - t->GetPos().y) < 10 &&
 		((dir == UP && wall[UP]) ||
 		(dir == DOWN && wall[DOWN]) ||
 		(dir == RIGHT && wall[RIGHT]) ||
@@ -58,6 +79,26 @@ void PlayerComp::Update()
 
 	else
 		r->SetVelocity(dx[dir] * speed, dy[dir] * speed);
+}
+
+void PlayerComp::ResetPos()
+{
+	TransformComp* t = owner->GetComponent<TransformComp>();
+	t->SetPos({ MapToPosX(spawnPos[1]), MapToPosY(spawnPos[0]) });
+}
+
+void PlayerComp::AddLife(int value)
+{
+	life += value;
+
+	if (life == 0)
+	{
+		GSM::GameStateManager::GetInstance().ChangeLevel(new level::GameOver);
+	}
+	else
+	{
+		ResetPos();
+	}
 }
 
 void PlayerComp::LoadFromJson(const json& data)

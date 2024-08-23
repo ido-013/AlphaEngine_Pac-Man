@@ -47,6 +47,9 @@ void CollisionManager::DelTrans(TransformComp* trans)
 
 void CollisionManager::Update()
 {
+	if (transformList.empty())
+		return;
+
 	EventManager& em = EventManager::GetInstance();
 
 	for (int i = 0; i < transformList.size() - 1; i++)

@@ -1,6 +1,9 @@
 #pragma once
+#include "size.h"
 
-int PosToMapX(float winWidth, float width, float x);
-int PosToMapY(float winWidth, float height, float y);
-float MapToPosX(float winWidth, float scaleX, float width, int ind);
-float MapToPosY(float winHeight, float scaleY, float height, int ind);
+int PosToMapX(float x);
+int PosToMapY(float y);
+float MapToPosX(int ind);
+float MapToPosY(int ind);
+
+float GetSqDistance(float ax, float ay, float bx, float by);

@@ -7,12 +7,10 @@
 #include "Level/InitialLevel.h"
 #include "Level/TestLevel.h"
 #include "Level/TransformTest.h"
-
+#include "Level/GameOver.h"
+#include "Utils/Utils.h"
 // ---------------------------------------------------------------------------
 // main
-
-const int windowWidth = 900;
-const int windowHeight = 900;
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,

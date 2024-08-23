@@ -4,6 +4,7 @@
 #include "../Components/PlayerComp.h"
 #include "../Components/SpriteComp.h"
 #include "../Components/RigidBodyComp.h"
+#include "../Components/EnemyComp.h"
 
 Registry::Registry()
 {
@@ -13,6 +14,7 @@ Registry::Registry()
     rttiMap.insert({ PlayerComp::TypeName, &PlayerComp::CreatePlayerComponent });
     rttiMap.insert({ SpriteComp::TypeName, &SpriteComp::CreateSpriteComponent });
     rttiMap.insert({ RigidbodyComp::TypeName, &RigidbodyComp::CreateRigidBodyComponent });
+    rttiMap.insert({ EnemyComp::TypeName, &EnemyComp::CreateEnemyComponent });
 }
 
 BaseRTTI* Registry::FindAndCreate(const std::string& type, GameObject* owner)

@@ -7,6 +7,7 @@
 #include "../Components/SpriteComp.h"
 #include "../Components/PlayerComp.h"
 #include "../Components/RigidbodyComp.h"
+#include "../Components/EnemyComp.h"
 #include "../EventManager/EventManager.h"
 #include "../Prefab/Prefab.h"
 #include <iostream>
@@ -21,8 +22,10 @@ void level::TransformTest::Init()
 
 	coin->AddComponent<TransformComp>();
 	coin->AddComponent<SpriteComp>();
+	coin->AddComponent<RigidbodyComp>();
+	coin->AddComponent<EnemyComp>();
 
-	coin->SetType(Entity::Coin);
+	coin->SetType(Entity::Enemy);
 
 	TransformComp* ct = coin->GetComponent<TransformComp>();
 	ct->SetScale({ 100, 100 });

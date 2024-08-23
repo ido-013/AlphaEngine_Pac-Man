@@ -1,21 +1,26 @@
 #include "Utils.h"
 
-int PosToMapX(float winWidth, float width, float x)
+int PosToMapX(float x)
 {
-    return (x + (winWidth / 2)) / (winWidth / width);
+    return (x + (windowWidth / 2)) / (windowWidth / width);
 }
 
-int PosToMapY(float winHeight, float height, float y)
+int PosToMapY(float y)
 {
-    return (y + (winHeight / 2)) / (winHeight / height);
+    return (y + (windowHeight / 2)) / (windowHeight / height);
 }
 
-float MapToPosX(float winWidth, float scaleX, float width, int ind)
+float MapToPosX(int ind)
 {
-    return (winWidth / width) * ind - (winWidth / 2) + (scaleX / 2);
+    return (windowWidth / width) * ind - (windowWidth / 2) + ((windowWidth / width) / 2);
 }
 
-float MapToPosY(float winHeight, float scaleY, float height, int ind)
+float MapToPosY(int ind)
 {
-    return (winHeight / height) * ind - (winHeight / 2) + (scaleY / 2);
+    return (windowHeight / height) * ind - (windowHeight / 2) + ((windowHeight / height) / 2);
+}
+
+float GetSqDistance(float ax, float ay, float bx, float by)
+{
+    return ((ax - bx) * (ax - bx)) + ((ay - by) * (ay - by));
 }

@@ -1,53 +1,49 @@
 #pragma once
 #include <string>
-
-constexpr int height = 32;
-constexpr int width = 32;
+#include "../Utils/size.h"
 
 std::string map[height] =
 {
 	"--------------------------------",
 	"-111111111111111111111111111111-",
-	"-1oooooooooooooooooooooooooooo1-",
+	"-1oooooo*ooooooooooooooooooooo1-",
 	"-1o1o1111111111111111111111o1o1-",
-	"-1oooooooooooooooooooooooooooo1-",
+	"-1ooo*oooooooooooooooooooooooo1-",
 	"-1o1o111o11111111111111o111o1o1-",
-	"-1o1o1o1oooooooooooooooo1o1o1o1-",
+	"-1o1o1-1ooooooooooooo*oo1-1o1o1-",
 	"-1o1o111o11111111111111o111o1o1-",
 	"-1o1oooooooooooooooooooooooo1o1-",
 	"-1o1o1o1o11111111111111o1o1o1o1-",
-	"-1o1o1o1o1oooooooooooo1o1o1o1o1-",
+	"-1o1o1o1o1------------1o1o1o1o1-",
 	"-1o1o1o1o11111111111111o1o1o1o1-",
 	"-1o1o1o1oooooooooooooooo1o1o1o1-",
-	"-1o1o1o1o1o111----111o1o1o1o1o1-",
-	"-1o1o1o1o1ooo1-E--1ooo1o1o1o1o1-",
-	"-1o1o1o1o1o1o111111o1o1o1o1o1o1-",
-	"-1o1o1o1o1ooo111111ooo1o1o1o1o1-",
-	"-1o1o1o1o1o1oooooooo1o1o1o1o1o1-",
+	"-1o1o1o1o1o111PPPP111o1o1o1o1o1-",
+	"-1o1o1o1o1ooo1EEEE1ooo1o1o1o1o1-",
+	"-1o1o1o1o1o1o111111o1o1o1o1*1o1-",
+	"-1o1o1o1*1ooo1oooo1ooo1o1o1o1o1-",
+	"-1o1o1o1o1o1ooo11ooo1o1o1o1o1o1-",
 	"-1o1o1o1o1o1111111111o1o1o1o1o1-",
 	"-1o1o1o1oooooooooooooooo1o1o1o1-",
+	"-1*1o1o1o11111111111111o1o1o1o1-",
+	"-1o1o1o1o1------------1o1o1o1o1-",
 	"-1o1o1o1o11111111111111o1o1o1o1-",
-	"-1o1o1o1o1oooooooooooo1o1o1o1o1-",
-	"-1o1o1o1o11111111111111o1o1o1o1-",
-	"-1o1oooooooooooooooooooooooo1o1-",
+	"-1o1oooooooo*ooooooooooooooo1*1-",
 	"-1o1o111o11111111111111o111o1o1-",
-	"-1o1o1o1oooooooooooooooo1o1o1o1-",
+	"-1o1o1-1oooooooooooooooo1-1o1o1-",
 	"-1o1o111o11111111111111o111o1o1-",
-	"-1oooooooooooooooooooooooooooo1-",
+	"-1oooo*ooooooooooooooooooooooo1-",
 	"-1o1o1111111111111111111111o1o1-",
-	"-1ooooooooooooooooooooooooooo21-",
+	"-1ooooooooooooooooooooo*ooooo21-",
 	"-111111111111111111111111111111-",
 	"--------------------------------"
 };
 
-//constexpr int height = 5;
-//constexpr int width = 5;
-//
+
 //std::string map[height] =
 //{
-//	"-----",
-//	"-----",
-//	"--2--",
-//	"-----",
-//	"-----"
+//	"11111",
+//	"1---1",
+//	"1-2-1",
+//	"1--E1",
+//	"11111"
 //};

@@ -30,3 +30,12 @@ void GameObjectManager::RemoveObject(GameObject* obj)
 		}
 	}
 }
+
+void GameObjectManager::RemoveAllObject()
+{
+	for (auto it = objects.begin(); it != objects.end(); it++)
+	{
+		delete *it;
+	}
+	objects.clear();
+}
