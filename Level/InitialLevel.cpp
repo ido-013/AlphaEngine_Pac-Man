@@ -171,6 +171,9 @@ void level::InitialLevel::Update()
 
 			e->targetY = MapToPosX(e->mapPos[0]);
 			e->targetX = MapToPosX(e->mapPos[1]);
+
+			if (e->isRot)
+				e->isRot = false;
 		}
 
 		e->wall[e->LEFT]  =	(map[e->mapPos[0]][e->mapPos[1] - 1] == '1');
@@ -191,6 +194,9 @@ void level::InitialLevel::Update()
 
 		p->targetY = MapToPosX(p->mapPos[0]);
 		p->targetX = MapToPosX(p->mapPos[1]);
+
+		if (p->isRot)
+			p->isRot = false;
 	}
 
 	p->wall[p->LEFT]  =	(map[p->mapPos[0]][p->mapPos[1] - 1] == '1') || (map[p->mapPos[0]][p->mapPos[1] - 1] == 'P');

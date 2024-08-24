@@ -18,6 +18,7 @@ public:
 private:
 	bool wall[4] = { false };
 	bool superMode = false;
+	bool isRot = false;
 
 	int mapPos[2];
 	int spawnPos[2];

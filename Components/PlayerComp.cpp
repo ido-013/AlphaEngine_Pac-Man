@@ -11,9 +11,9 @@
 #include "../Prefab/Prefab.h"
 #include "../GameObjectManager/GameObjectManager.h"
 
-PlayerComp::PlayerComp(GameObject* _owner) : LogicComponent(_owner), pFont(AEGfxCreateFont("Assets/Arial-Italic.ttf", 20))
+PlayerComp::PlayerComp(GameObject* _owner) : LogicComponent(_owner)//, pFont(AEGfxCreateFont("Assets/Arial-Italic.ttf", 20))
 {
-	Prefab lPrefab("life");
+	/*Prefab lPrefab("life");
 	TransformComp* t = nullptr;
 
 	for (int i = 0; i < life; i++)
@@ -30,7 +30,7 @@ PlayerComp::PlayerComp(GameObject* _owner) : LogicComponent(_owner), pFont(AEGfx
 					-(windowHeight / 2) + (scaleY / 2) + padding });
 
 		lives.push_back(temp);
-	}
+	}*/
 }
 
 PlayerComp::~PlayerComp()
@@ -71,24 +71,28 @@ void PlayerComp::Update()
 		}
 	}
 
-	if (AEInputCheckCurr(AEVK_W) && dir != DOWN && dir != UP && !wall[UP])
+	if (AEInputCheckCurr(AEVK_W) && dir != DOWN && dir != UP && !wall[UP] && !isRot)
 	{	
 		t->SetPos({ targetX, targetY });
+		isRot = true;
 		dir = UP;
 	}
-	if (AEInputCheckCurr(AEVK_S) && dir != UP && dir != DOWN && !wall[DOWN])
+	if (AEInputCheckCurr(AEVK_S) && dir != UP && dir != DOWN && !wall[DOWN] && !isRot)
 	{
 		t->SetPos({ targetX, targetY });
+		isRot = true;
 		dir = DOWN;
 	}
-	if (AEInputCheckCurr(AEVK_A) && dir != RIGHT && dir != LEFT && !wall[LEFT])
+	if (AEInputCheckCurr(AEVK_A) && dir != RIGHT && dir != LEFT && !wall[LEFT] && !isRot)
 	{
 		t->SetPos({ targetX, targetY });
+		isRot = true;
 		dir = LEFT;
 	}
-	if (AEInputCheckCurr(AEVK_D) && dir != LEFT && dir != RIGHT && !wall[RIGHT])
+	if (AEInputCheckCurr(AEVK_D) && dir != LEFT && dir != RIGHT && !wall[RIGHT] && !isRot)
 	{
 		t->SetPos({ targetX, targetY });
+		isRot = true;
 		dir = RIGHT;
 	}
 
@@ -105,7 +109,7 @@ void PlayerComp::Update()
 	else
 		r->SetVelocity(dx[dir] * speed, dy[dir] * speed);
 
-	AEGfxPrint(pFont, std::to_string(score).c_str(), -0.99f, 0.95f, 1.f, 1.f, 1.f, 1.f, 1.f);
+	//AEGfxPrint(pFont, std::to_string(score).c_str(), -0.99f, 0.95f, 1.f, 1.f, 1.f, 1.f, 1.f);
 }
 
 void PlayerComp::ResetPos()
@@ -118,8 +122,8 @@ void PlayerComp::UpdateLife()
 {
 	life--;
 
-	GameObjectManager::GetInstance().RemoveObject(lives.back());
-	lives.pop_back();
+	/*GameObjectManager::GetInstance().RemoveObject(lives.back());*/
+	/*lives.pop_back();*/
 
 	if (life == 0)
 	{

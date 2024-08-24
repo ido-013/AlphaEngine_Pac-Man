@@ -14,6 +14,7 @@ public:
 		DOWN = 3,
 	};
 
+	bool isRot = true;
 	bool wall[4] = { false };
 	int mapPos[2];
 	int spawnPos[2];

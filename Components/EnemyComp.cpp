@@ -18,6 +18,23 @@ void EnemyComp::Update()
 	RigidbodyComp* r = owner->GetComponent<RigidbodyComp>();
 	if (!r) return;
 
+	int emptyCount = 0;
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (i == (dir + 2) % 4)
+			continue;
+
+		if (!wall[i])
+			emptyCount++;
+	}
+
+	if (emptyCount > 1 && !isRot)
+	{
+		UpdateDir();
+		isRot = true;
+	}
+
 	if (abs(targetX - t->GetPos().x) < 3 &&
 		abs(targetY - t->GetPos().y) < 3 &&
 		((dir == UP && wall[UP]) ||
@@ -39,11 +56,12 @@ void EnemyComp::Update()
 				break;
 			}
 		}
+
+		isRot = true;
 	}
 	
-	else
-		r->SetVelocity(dx[dir] * speed, dy[dir] * speed);
-
+	
+	r->SetVelocity(dx[dir] * speed, dy[dir] * speed);
 	t->SetRot((PI / 2) * dir);
 }
 
@@ -51,47 +69,33 @@ void EnemyComp::UpdateDir()
 {
 	TransformComp* t = owner->GetComponent<TransformComp>();
 
-	//int emptyCount = 0;
+	float min = 10'000'000;
+	direction tempDir;
 
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	if (i == (dir + 2) % 4)
-	//		continue;
+	for (int i = 0; i < 4; i++)
+	{
+		if (i == (dir + 2) % 4 || wall[i])
+			continue;
 
-	//	if (!wall[i])
-	//		emptyCount++;
-	//}
+		float y = MapToPosY(mapPos[0] + dy[i]);
+		float x = MapToPosX(mapPos[1] + dx[i]);
 
-	//if (emptyCount > 1)
-	//{
-	//	float min = 10'000'000;
-	//	direction tempDir;
+		// calculate distance
+		float dis = GetSqDistance(playerTrans->GetPos().x, playerTrans->GetPos().y, x, y);
 
-	//	for (int i = 0; i < 4; i++)
-	//	{
-	//		if (i == (dir + 2) % 4 || wall[i])
-	//			continue;
+		if (dis < min)
+		{
+			min = dis;
+			tempDir = direction(i);
+		}
+	}
 
-	//		float y = MapToPosY(mapPos[0] + dy[i]);
-	//		float x = MapToPosX(mapPos[1] + dx[i]);
-
-	//		// calculate distance
-	//		float dis = GetSqDistance(playerTrans->GetPos().x, playerTrans->GetPos().y, x, y);
-
-	//		if (dis < min)
-	//		{
-	//			min = dis;
-	//			tempDir = direction(i);
-	//		}
-	//	}
-
-	//	// if diff dir, correct pos and change dir	
-	//	if (dir != tempDir)
-	//	{
-	//		t->SetPos({ targetX, targetY });
-	//		dir = tempDir;
-	//	}
-	//}
+	// if diff dir, correct pos and change dir	
+	if (dir != tempDir)
+	{
+		t->SetPos({ targetX, targetY });
+		dir = tempDir;
+	}
 }
 
 void EnemyComp::ResetPos()
