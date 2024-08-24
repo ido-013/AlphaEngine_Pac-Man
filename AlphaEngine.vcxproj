@@ -117,7 +117,8 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q</C
     <ClCompile Include="Event\Entity.cpp" />
     <ClCompile Include="Event\Event.cpp" />
     <ClCompile Include="GameObjectManager\GameObejectManager.cpp" />
-    <ClCompile Include="GSM\GameStateManger.cpp" />
+    <ClCompile Include="GSM\GameStateManager.cpp" />
+    <ClCompile Include="Level\GameClear.cpp" />
     <ClCompile Include="Level\GameOver.cpp" />
     <ClCompile Include="Level\InitialLevel.cpp" />
     <ClCompile Include="Level\TestLevel.cpp" />
@@ -156,7 +157,8 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q</C
     <ClInclude Include="EventManager\EventManager.h" />
     <ClInclude Include="GameObjectManager\GameObjectManager.h" />
     <ClInclude Include="Level\BaseLevel.h" />
-    <ClInclude Include="GSM\GameStateManger.h" />
+    <ClInclude Include="GSM\GameStateManager.h" />
+    <ClInclude Include="Level\GameClear.h" />
     <ClInclude Include="Level\GameOver.h" />
     <ClInclude Include="Level\InitialLevel.h" />
     <ClInclude Include="Level\TestLevel.h" />

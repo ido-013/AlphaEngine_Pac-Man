@@ -1,16 +1,41 @@
 #include "PlayerComp.h"
-#include "AEEngine.h"
+#include <string>
 #include "TransformComp.h"
 #include "RigidbodyComp.h"
 #include "SpriteComp.h"
 #include "../Event/CollisionEvent.h"
 #include "../Utils/Utils.h"
-#include "../GSM/GameStateManger.h"
+#include "../GSM/GameStateManager.h"
 #include "../Level/GameOver.h"
+#include "../Level/GameClear.h"
+#include "../Prefab/Prefab.h"
+#include "../GameObjectManager/GameObjectManager.h"
 
-PlayerComp::PlayerComp(GameObject* _owner) : LogicComponent(_owner)
+PlayerComp::PlayerComp(GameObject* _owner) : LogicComponent(_owner), pFont(AEGfxCreateFont("Assets/Arial-Italic.ttf", 20))
 {
-	
+	Prefab lPrefab("life");
+	TransformComp* t = nullptr;
+
+	for (int i = 0; i < life; i++)
+	{
+		GameObject* temp = lPrefab.NewGameObject();
+		t = temp->GetComponent<TransformComp>();
+
+		float scaleX = 20;
+		float scaleY = 20;
+		float padding = 10;
+
+		t->SetScale({ scaleX, scaleY });
+		t->SetPos({ (i * (scaleX + 10.f)) - (windowWidth / 2) + (scaleX / 2) + padding,
+					-(windowHeight / 2) + (scaleY / 2) + padding });
+
+		lives.push_back(temp);
+	}
+}
+
+PlayerComp::~PlayerComp()
+{
+	AEGfxDestroyFont(pFont);
 }
 
 void PlayerComp::AddScore(int _score)
@@ -79,6 +104,8 @@ void PlayerComp::Update()
 
 	else
 		r->SetVelocity(dx[dir] * speed, dy[dir] * speed);
+
+	AEGfxPrint(pFont, std::to_string(score).c_str(), -0.99f, 0.95f, 1.f, 1.f, 1.f, 1.f, 1.f);
 }
 
 void PlayerComp::ResetPos()
@@ -87,9 +114,12 @@ void PlayerComp::ResetPos()
 	t->SetPos({ MapToPosX(spawnPos[1]), MapToPosY(spawnPos[0]) });
 }
 
-void PlayerComp::AddLife(int value)
+void PlayerComp::UpdateLife()
 {
-	life += value;
+	life--;
+
+	GameObjectManager::GetInstance().RemoveObject(lives.back());
+	lives.pop_back();
 
 	if (life == 0)
 	{
@@ -98,6 +128,16 @@ void PlayerComp::AddLife(int value)
 	else
 	{
 		ResetPos();
+	}
+}
+
+void PlayerComp::UpdateCoin()
+{
+	coinCount--;
+
+	if (coinCount == 0)
+	{
+		GSM::GameStateManager::GetInstance().ChangeLevel(new level::GameClear(score));
 	}
 }
 

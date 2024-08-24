@@ -18,7 +18,7 @@
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="GSM\GameStateManger.cpp">
+    <ClCompile Include="GSM\GameStateManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GameObject\GameObject.cpp">
@@ -108,9 +108,12 @@
     <ClCompile Include="Level\GameOver.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Level\GameClear.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GSM\GameStateManger.h">
+    <ClInclude Include="GSM\GameStateManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="ComponentManager\BaseComponent.h">
@@ -225,6 +228,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Level\GameOver.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Level\GameClear.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

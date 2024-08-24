@@ -1,5 +1,5 @@
 #include "TransformTest.h"
-#include "../GSM/GameStateManger.h"
+#include "../GSM/GameStateManager.h"
 #include "../ComponentManager/ComponentManager.h"
 #include "../GameObject/GameObject.h"
 #include "../Components/AudioComp.h"
@@ -12,30 +12,24 @@
 #include "../Prefab/Prefab.h"
 #include <iostream>
 
-GameObject* player = nullptr;
-GameObject* coin = nullptr;
-GameObject* flag = nullptr;
+GameObject* temp = nullptr;
 
 void level::TransformTest::Init()
 {
-	coin = new GameObject();
+	temp = new GameObject();
 
-	coin->AddComponent<TransformComp>();
-	coin->AddComponent<SpriteComp>();
-	coin->AddComponent<RigidbodyComp>();
-	coin->AddComponent<EnemyComp>();
+	temp->AddComponent<TransformComp>();
+	temp->AddComponent<SpriteComp>();
 
-	coin->SetType(Entity::Enemy);
-
-	TransformComp* ct = coin->GetComponent<TransformComp>();
+	TransformComp* ct = temp->GetComponent<TransformComp>();
 	ct->SetScale({ 100, 100 });
 	ct->SetPos({ 0, 0 });
 
-	SpriteComp* cs = coin->GetComponent<SpriteComp>();
-	cs->SetTexture("Assets/arrow.png");
-	cs->SetColor(255, 0, 0);
+	SpriteComp* cs = temp->GetComponent<SpriteComp>();
+	cs->SetTexture("Assets/heart.png");
+	cs->SetColor(0, 0, 0);
 
-	Prefab::SavePrefab("enemy", coin);
+	Prefab::SavePrefab("life", temp);
 }
 
 void level::TransformTest::Update()

@@ -6,12 +6,13 @@ class Entity
 public:
 	enum Type
 	{
-		Player = 0,
-		Coin = 1,
-		Flag = 2,
-		Wall = 3,
-		Enemy = 4,
-		Super = 5,
+		None = 0,
+		Player = 1,
+		Coin = 2,
+		Flag = 3,
+		Wall = 4,
+		Enemy = 5,
+		Super = 6,
 	};
 
 	virtual void OnEvent(Event* event) = 0;

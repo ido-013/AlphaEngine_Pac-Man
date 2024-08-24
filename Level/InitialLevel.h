@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include "BaseLevel.h"
 #include "../GameObject/GameObject.h"
 
@@ -8,10 +7,9 @@ namespace level
 	class InitialLevel: public GSM::BaseLevel
 	{
 	private:
-		std::vector<GameObject*> players;
-		std::vector<GameObject*> walls;
-		std::vector<GameObject*> coins;
-		std::vector<GameObject*> enemies;
+		GameObject* player = nullptr;
+		GameObject* enemies[4];
+		int coinCount = 0;
 
 	public:
 		void Init() override;

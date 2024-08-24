@@ -12,8 +12,9 @@ AudioComp::AudioComp(GameObject* owner) : BaseComponent(owner), group(), audio()
 
 AudioComp::~AudioComp()  
 {
-	//AEAudioUnloadAudioGroup(group);
 	ResourceManager::GetInstance().UnloadResource(audioName);
+	AEAudioStopGroup(group);
+	AEAudioUnloadAudioGroup(group);
 	ComponentManager<AudioComp>::GetInstance().DelComp(this);
 }
 

@@ -32,17 +32,18 @@ void GameObject::OnEvent(Event* event)
 		{
 			if (event->src->GetType() == Entity::Coin)
 			{
-				GetComponent<PlayerComp>()->AddScore(10);
 				EventManager::GetInstance().AddEvent<DestroyEvent>(event->dst, event->src);
+				GetComponent<PlayerComp>()->AddScore(10);
+				GetComponent<PlayerComp>()->UpdateCoin();
 			}
 
-			if (event->src->GetType() == Entity::Super)
+			else if (event->src->GetType() == Entity::Super)
 			{
 				GetComponent<PlayerComp>()->superMode = true;
 				EventManager::GetInstance().AddEvent<DestroyEvent>(event->dst, event->src);
 			}
 
-			if (event->src->GetType() == Entity::Enemy)
+			else if (event->src->GetType() == Entity::Enemy)
 			{
 				if (GetComponent<PlayerComp>()->superMode)
 				{
@@ -56,16 +57,16 @@ void GameObject::OnEvent(Event* event)
 			}
 		}
 
-		if (dynamic_cast<DeathEvent*>(event) != nullptr)
+		else if (dynamic_cast<DeathEvent*>(event) != nullptr)
 		{
 			if (event->src->GetType() == Entity::Enemy)
 			{
-				GetComponent<PlayerComp>()->AddLife(-1);
+				GetComponent<PlayerComp>()->UpdateLife();
 			}
 		}
 	}
 
-	if (GetType() == Entity::Coin)
+	else if (GetType() == Entity::Coin)
 	{
 		if (dynamic_cast<DestroyEvent*>(event) != nullptr)
 		{
@@ -76,7 +77,7 @@ void GameObject::OnEvent(Event* event)
 		}
 	}
 
-	if (GetType() == Entity::Super)
+	else if (GetType() == Entity::Super)
 	{
 		if (dynamic_cast<DestroyEvent*>(event) != nullptr)
 		{
@@ -87,7 +88,7 @@ void GameObject::OnEvent(Event* event)
 		}
 	}
 
-	if (GetType() == Entity::Enemy)
+	else if (GetType() == Entity::Enemy)
 	{
 		if (dynamic_cast<DeathEvent*>(event) != nullptr)
 		{

@@ -1,4 +1,4 @@
-#include "GameStateManger.h"
+#include "GameStateManager.h"
 #include "AEEngine.h"
 #include "../Level/BaseLevel.h"
 #include "../ComponentManager/ComponentManager.h"

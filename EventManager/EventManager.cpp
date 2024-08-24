@@ -13,6 +13,10 @@ void EventManager::DispatchAllEvents()
     while (!allEvents.empty())
     {
         allEvents.front()->DispatchEvent();
+
+        if (allEvents.empty())
+            break;
+
         delete allEvents.front();
         allEvents.pop();
     }

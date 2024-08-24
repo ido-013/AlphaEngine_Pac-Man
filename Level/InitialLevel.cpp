@@ -12,6 +12,7 @@
 #include "../Utils/Utils.h"
 #include "../Map/Map.h"
 #include "../GameObjectManager/GameObjectManager.h"
+#include "../EventManager/EventManager.h"
 
 void level::InitialLevel::Init()
 {
@@ -20,14 +21,20 @@ void level::InitialLevel::Init()
 	Prefab wPrefab("wall");
 	Prefab ePrefab("enemy");
 
+	TransformComp* t = nullptr;
+	SpriteComp* s = nullptr;
+	PlayerComp* p = nullptr;
+	EnemyComp* e = nullptr;
+	GameObject* temp = nullptr;
+
+	int enemyInd = 0;
+
 	for (int i = 0; i < height; i++)
 	{
 		for (int j = 0; j < width; j++)
 		{
 			if (map[i][j] != '-')
 			{
-				GameObject* temp;
-
 				if (map[i][j] == '1')
 				{
 					temp = wPrefab.NewGameObject();
@@ -38,6 +45,7 @@ void level::InitialLevel::Init()
 				{
 					temp = cPrefab.NewGameObject();
 					temp->SetType(Entity::Coin);
+					coinCount++;
 				}
 
 				else if (map[i][j] == 'E')
@@ -61,29 +69,31 @@ void level::InitialLevel::Init()
 				else
 				{
 					temp = pPrefab.NewGameObject();
+					temp->SetType(Entity::Player);
 				}
 
-				temp->GetComponent<TransformComp>()->SetScale({ windowWidth / width, windowHeight / height });
+				t = temp->GetComponent<TransformComp>();
+
+				t->SetScale({ windowWidth / width, windowHeight / height });
 
 				float x = MapToPosX(j);
 				float y = MapToPosY(i);
-				temp->GetComponent<TransformComp>()->SetPos({ x, y });
+				t->SetPos({ x, y });
 				
 				if (map[i][j] == '1')
 				{
-					walls.push_back(temp);
+					
 				}
 
 				else if (map[i][j] == 'o')
 				{
-					auto t = temp->GetComponent<TransformComp>();
 					t->SetScale({ t->GetScale().x / 2.f, t->GetScale().y / 2.f });
-					coins.push_back(temp);
 				}
 
 				else if (map[i][j] == 'E')
 				{
-					auto e = temp->GetComponent<EnemyComp>();
+					e = temp->GetComponent<EnemyComp>();
+
 					e->mapPos[0] = i;
 					e->mapPos[1] = j;
 					e->spawnPos[0] = i;
@@ -94,24 +104,27 @@ void level::InitialLevel::Init()
 					e->wall[e->RIGHT] = (map[e->mapPos[0]][e->mapPos[1] + 1] == '1');
 					e->wall[e->UP]    =	(map[e->mapPos[0] + 1][e->mapPos[1]] == '1');
 					e->wall[e->DOWN]  =	(map[e->mapPos[0] - 1][e->mapPos[1]] == '1');
-					enemies.push_back(temp);
+					enemies[enemyInd] = temp;
+					enemyInd++;
 				}
 
 				else if (map[i][j] == 'P')
 				{
-					auto s = temp->GetComponent<SpriteComp>();
+					s = temp->GetComponent<SpriteComp>();
 					s->SetColor(0, 255, 0);
 				}
 
 				else if (map[i][j] == '*')
 				{
-					auto s = temp->GetComponent<SpriteComp>();
+					s = temp->GetComponent<SpriteComp>();
+					t->SetScale({ t->GetScale().x / 1.2f, t->GetScale().y / 1.2f });
 					s->SetColor(0, 0, 255);
 				}
 
 				else
 				{
-					auto p = temp->GetComponent<PlayerComp>();
+					p = temp->GetComponent<PlayerComp>();
+
 					p->mapPos[0] = i;
 					p->mapPos[1] = j;
 					p->spawnPos[0] = i;
@@ -122,7 +135,8 @@ void level::InitialLevel::Init()
 					p->wall[p->RIGHT] = (map[p->mapPos[0]][p->mapPos[1] + 1] == '1') || (map[p->mapPos[0]][p->mapPos[1] + 1] == 'P');
 					p->wall[p->UP]    =	(map[p->mapPos[0] + 1][p->mapPos[1]] == '1') || (map[p->mapPos[0] + 1][p->mapPos[1]] == 'P');
 					p->wall[p->DOWN]  =	(map[p->mapPos[0] - 1][p->mapPos[1]] == '1') || (map[p->mapPos[0] - 1][p->mapPos[1]] == 'P');
-					players.push_back(temp);
+
+					player = temp;
 				}
 			}
 		}
@@ -130,17 +144,23 @@ void level::InitialLevel::Init()
 
 	for (auto enemy : enemies)
 	{
-		auto e = enemy->GetComponent<EnemyComp>();
-		e->playerTrans = players[0]->GetComponent<TransformComp>();
+		e = enemy->GetComponent<EnemyComp>();
+		e->playerTrans = player->GetComponent<TransformComp>();
 	}
+
+	p->coinCount = coinCount;
 }
 
 void level::InitialLevel::Update()
 {
+	TransformComp* t = nullptr;
+	EnemyComp* e = nullptr;
+	PlayerComp* p = nullptr;
+
 	for (auto enemy : enemies)
 	{
-		auto t = enemy->GetComponent<TransformComp>();
-		auto e = enemy->GetComponent<EnemyComp>();
+		t = enemy->GetComponent<TransformComp>();
+		e = enemy->GetComponent<EnemyComp>();
 		AEVec2 enemyPos = t->GetPos();
 
 		if (PosToMapX(enemyPos.x) != e->mapPos[1]
@@ -159,30 +179,28 @@ void level::InitialLevel::Update()
 		e->wall[e->UP]    =	(map[e->mapPos[0] + 1][e->mapPos[1]] == '1');
 	}
 
-	for (auto player : players)
+	t = player->GetComponent<TransformComp>();
+	p = player->GetComponent<PlayerComp>();
+	AEVec2 playerPos = t->GetPos();
+
+	if (PosToMapX(playerPos.x) != p->mapPos[1]
+		|| PosToMapY(playerPos.y) != p->mapPos[0])
 	{
-		auto t = player->GetComponent<TransformComp>();
-		auto p = player->GetComponent<PlayerComp>();
-		AEVec2 playerPos = t->GetPos();
+		p->mapPos[0] = PosToMapY(playerPos.y);
+		p->mapPos[1] = PosToMapX(playerPos.x);
 
-		if (PosToMapX(playerPos.x) != p->mapPos[1]
-			|| PosToMapY(playerPos.y) != p->mapPos[0])
-		{
-			p->mapPos[0] = PosToMapY(playerPos.y);
-			p->mapPos[1] = PosToMapX(playerPos.x);
-
-			p->targetY = MapToPosX(p->mapPos[0]);
-			p->targetX = MapToPosX(p->mapPos[1]);
-		}
-
-		p->wall[p->LEFT]  =	(map[p->mapPos[0]][p->mapPos[1] - 1] == '1') || (map[p->mapPos[0]][p->mapPos[1] - 1] == 'P');
-		p->wall[p->RIGHT] = (map[p->mapPos[0]][p->mapPos[1] + 1] == '1') || (map[p->mapPos[0]][p->mapPos[1] + 1] == 'P');
-		p->wall[p->UP]    =	(map[p->mapPos[0] + 1][p->mapPos[1]] == '1') || (map[p->mapPos[0] + 1][p->mapPos[1]] == 'P');
-		p->wall[p->DOWN]  =	(map[p->mapPos[0] - 1][p->mapPos[1]] == '1') || (map[p->mapPos[0] - 1][p->mapPos[1]] == 'P');
+		p->targetY = MapToPosX(p->mapPos[0]);
+		p->targetX = MapToPosX(p->mapPos[1]);
 	}
+
+	p->wall[p->LEFT]  =	(map[p->mapPos[0]][p->mapPos[1] - 1] == '1') || (map[p->mapPos[0]][p->mapPos[1] - 1] == 'P');
+	p->wall[p->RIGHT] = (map[p->mapPos[0]][p->mapPos[1] + 1] == '1') || (map[p->mapPos[0]][p->mapPos[1] + 1] == 'P');
+	p->wall[p->UP]    =	(map[p->mapPos[0] + 1][p->mapPos[1]] == '1') || (map[p->mapPos[0] + 1][p->mapPos[1]] == 'P');
+	p->wall[p->DOWN]  =	(map[p->mapPos[0] - 1][p->mapPos[1]] == '1') || (map[p->mapPos[0] - 1][p->mapPos[1]] == 'P');
 }
 
 void level::InitialLevel::Exit()
 {
 	GameObjectManager::GetInstance().RemoveAllObject();
+	EventManager::GetInstance().DeleteUndispahchEvent();
 }

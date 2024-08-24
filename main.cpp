@@ -3,7 +3,7 @@
 
 #include <crtdbg.h> // To check for memory leaks
 #include "AEEngine.h"
-#include "GSM/GameStateManger.h"
+#include "GSM/GameStateManager.h"
 #include "Level/InitialLevel.h"
 #include "Level/TestLevel.h"
 #include "Level/TransformTest.h"
@@ -30,7 +30,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	AESysInit(hInstance, nCmdShow, windowWidth, windowHeight, 1, 60, true, NULL);
 
 	// Changing the window title
-	AESysSetWindowTitle("My New Demo!");
+	AESysSetWindowTitle("Pac-Man");
 
 	GSM::GameStateManager& gsm = GSM::GameStateManager::GetInstance();
 
