@@ -1,18 +1,13 @@
 #pragma once
-#include <list>
+#include <vector>
 #include <string>
 #include "AEEngine.h"
 
-class Animation
+struct Animation
 {
-private:
-	std::string name;
-	std::list<std::pair<float, AEGfxTexture*>> frame;
+	std::vector<std::pair<double, std::string>> frame;
+	double totalTime = 0;
+	int size = 0;
 
-public:
-	Animation(std::string _name);
-	~Animation();
-
-	void AddFrame(float, std::string);
-	void SaveAnimation();
+	void AddFrame(const double&, const std::string&);
 };

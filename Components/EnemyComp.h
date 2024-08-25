@@ -21,7 +21,7 @@ private:
 	bool isOut = false;
 
 	float ghostTimer = 0;
-	float noneTimer = 0;
+	float specterTimer = 0;
 
 	int mapPos[2];
 	int spawnPos[2];
@@ -46,7 +46,9 @@ public:
 	void UpdateDir();
 
 	void ResetPos();
+	void InitEnemy();
 	void InitGhost();
+	void InitSpector();
 
 	void LoadFromJson(const json&) override;
 	json SaveToJson() override;

@@ -1,21 +1,9 @@
 #include "Animation.h"
+#include "../ResourceManager/ResourceManager.h"
 
-Animation::Animation(std::string _name)
+void Animation::AddFrame(const double& time, const std::string& spriteName)
 {
-
-}
-
-Animation::~Animation()
-{
-
-}
-
-void Animation::AddFrame(float time, std::string spriteName)
-{
-
-}
-
-void Animation::SaveAnimation()
-{
-
+	totalTime += time;
+	size++;
+	frame.push_back({ time, spriteName });
 }

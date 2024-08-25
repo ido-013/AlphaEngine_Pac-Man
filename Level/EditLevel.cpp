@@ -1,4 +1,4 @@
-#include "TransformTest.h"
+#include "EditLevel.h"
 #include "../GSM/GameStateManager.h"
 #include "../ComponentManager/ComponentManager.h"
 #include "../GameObject/GameObject.h"
@@ -8,13 +8,14 @@
 #include "../Components/PlayerComp.h"
 #include "../Components/RigidbodyComp.h"
 #include "../Components/EnemyComp.h"
+#include "../Components/AnimatorComp.h"
 #include "../EventManager/EventManager.h"
 #include "../Prefab/Prefab.h"
 #include <iostream>
 
 GameObject* temp = nullptr;
 
-void level::TransformTest::Init()
+void level::EditLevel::Init()
 {
 	temp = new GameObject();
 
@@ -23,6 +24,7 @@ void level::TransformTest::Init()
 	temp->AddComponent<AudioComp>();
 	temp->AddComponent<PlayerComp>();
 	temp->AddComponent<RigidbodyComp>();
+	temp->AddComponent<AnimatorComp>();
 
 	AudioComp* ta = temp->GetComponent<AudioComp>();
 	ta->SetAudio("Assets/Audio/bouken.mp3");
@@ -36,13 +38,21 @@ void level::TransformTest::Init()
 	ts->SetTexture("Assets/arrow.png");
 	ts->SetColor(255, 255, 255);
 
-	Prefab::SavePrefab("player", temp);
+	AnimatorComp* tan = temp->GetComponent<AnimatorComp>();
+	tan->AddAnimation("abc");
+	tan->UpdateAnimation(0.5f, "Assets/PlanetTexture.png", "abc");
+	tan->UpdateAnimation(0.5f, "Assets/Flag.png", "abc");
+	tan->SetAnimation(1, 1, "abc");
+
+	Prefab::SavePrefab("test", temp);
 }
 
-void level::TransformTest::Update()
+void level::EditLevel::Update()
 {
 
 }
 
-void level::TransformTest::Exit()
-{}
+void level::EditLevel::Exit()
+{
+
+}

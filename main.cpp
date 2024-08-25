@@ -5,9 +5,7 @@
 #include "AEEngine.h"
 #include "GSM/GameStateManager.h"
 #include "Level/InitialLevel.h"
-#include "Level/TestLevel.h"
-#include "Level/TransformTest.h"
-#include "Level/GameOver.h"
+#include "Level/EditLevel.h"
 #include "Utils/Utils.h"
 // ---------------------------------------------------------------------------
 // main

@@ -3,6 +3,7 @@
 #include "TransformComp.h"
 #include "RigidbodyComp.h"
 #include "SpriteComp.h"
+#include "AnimatorComp.h"
 #include "../Event/CollisionEvent.h"
 #include "../Utils/Utils.h"
 
@@ -22,36 +23,20 @@ void EnemyComp::Update()
 	SpriteComp* s = owner->GetComponent<SpriteComp>();
 	if (!s) return;
 
-	if (owner->GetType() == Entity::Enemy)
-	{
-		s->SetColor(255, 0, 0);
-		speed = 100;
-		ghostTimer = 0;
-		noneTimer = 0;
-	}
-	else if (owner->GetType() == Entity::Ghost)
-	{
-		s->SetColor(0, 0, 255);
-		speed = 60;
+	AnimatorComp* a = owner->GetComponent<AnimatorComp>();
+	if (!a) return;
 
+	if (owner->GetType() == Entity::Ghost)
+	{
 		ghostTimer += AEFrameRateControllerGetFrameTime();
 		if (ghostTimer > 10)
-		{
-			ghostTimer = 0;
-			owner->SetType(Entity::Enemy);
-		}
+			InitEnemy();
 	}
-	else
+	else if (owner->GetType() == Entity::Specter)
 	{
-		s->SetColor(255, 255, 0);
-		speed = 200;
-
-		noneTimer += AEFrameRateControllerGetFrameTime();
-		if (noneTimer > 3)
-		{
-			noneTimer = 0;
-			owner->SetType(Entity::Enemy);
-		}
+		specterTimer += AEFrameRateControllerGetFrameTime();
+		if (specterTimer > 3)
+			InitEnemy();
 	}
 
 	if (abs(targetX - t->GetPos().x) < 3 &&
@@ -152,10 +137,47 @@ void EnemyComp::ResetPos()
 	isRot = true;
 }
 
+void EnemyComp::InitEnemy()
+{
+	owner->SetType(Entity::Enemy);
+
+	AnimatorComp* a = owner->GetComponent<AnimatorComp>();
+	a->SetAnimation(1, 1.f, "walk");
+
+	SpriteComp* s = owner->GetComponent<SpriteComp>();
+	s->SetColor(255, 0, 0);
+
+	speed = 100;
+	ghostTimer = 0;
+	specterTimer = 0;
+}
+
 void EnemyComp::InitGhost()
 {
 	owner->SetType(Entity::Ghost);
+
+	AnimatorComp* a = owner->GetComponent<AnimatorComp>();
+	a->SetAnimation(1, 2.f, "walk");
+
+	SpriteComp* s = owner->GetComponent<SpriteComp>();
+	s->SetColor(0, 0, 255);
+
+	speed = 60;
 	ghostTimer = 0;
+}
+
+void EnemyComp::InitSpector()
+{
+	owner->SetType(Entity::Specter);
+
+	AnimatorComp* a = owner->GetComponent<AnimatorComp>();
+	a->SetAnimation(1, 5.f, "walk");
+
+	SpriteComp* s = owner->GetComponent<SpriteComp>();
+	s->SetColor(255, 255, 0);
+
+	speed = 200;
+	specterTimer = 0;
 }
 
 void EnemyComp::LoadFromJson(const json& data)

@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include "AEEngine.h"
-#include "../ComponentManager/ComponentManager.h"
 #include "../ComponentManager/GraphicComponent.h"
 
 class SpriteComp : public GraphicComponent

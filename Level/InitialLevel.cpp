@@ -7,6 +7,7 @@
 #include "../Components/PlayerComp.h"
 #include "../Components/AudioComp.h"
 #include "../Components/EnemyComp.h"
+#include "../Components/AnimatorComp.h"
 #include "../Serializer/Serializer.h"
 #include "../Prefab/Prefab.h"
 #include "../Utils/Utils.h"
@@ -26,9 +27,13 @@ void level::InitialLevel::Init()
 	PlayerComp* p = nullptr;
 	EnemyComp* e = nullptr;
 	AudioComp* a = nullptr;
+	AnimatorComp* am = nullptr;
 	GameObject* temp = nullptr;
 
-	int enemyInd = 0;
+	int enemyCount = 0;
+
+	std::pair<int, int> playerLoc;
+	std::pair<int, int> enemyLoc[4];
 
 	for (int i = 0; i < height; i++)
 	{
@@ -50,8 +55,9 @@ void level::InitialLevel::Init()
 
 			else if (map[i][j] == 'E')
 			{
-				temp = ePrefab.NewGameObject();
-				temp->SetType(Entity::Enemy);
+				enemyLoc[enemyCount] = { i, j };
+				enemyCount++;
+				continue;
 			}
 
 			else if (map[i][j] == 'P')
@@ -75,8 +81,8 @@ void level::InitialLevel::Init()
 
 			else if (map[i][j] == '2')
 			{
-				temp = pPrefab.NewGameObject();
-				temp->SetType(Entity::Player);
+				playerLoc = { i, j };
+				continue;
 			}
 
 			else
@@ -90,31 +96,9 @@ void level::InitialLevel::Init()
 			float y = MapToPosY(i);
 			t->SetPos({ x, y });
 
-			if (map[i][j] == '1')
-			{
-
-			}
-
-			else if (map[i][j] == 'o')
+			if (map[i][j] == 'o')
 			{
 				t->SetScale({ t->GetScale().x / 2.f, t->GetScale().y / 2.f });
-			}
-
-			else if (map[i][j] == 'E')
-			{
-				e = temp->GetComponent<EnemyComp>();
-				e->mapPos[0] = i;
-				e->mapPos[1] = j;
-				e->spawnPos[0] = i;
-				e->spawnPos[1] = j;
-				e->targetX = x;
-				e->targetY = y;
-				e->wall[e->LEFT] = (map[e->mapPos[0]][e->mapPos[1] - 1] == '1');
-				e->wall[e->RIGHT] = (map[e->mapPos[0]][e->mapPos[1] + 1] == '1');
-				e->wall[e->UP] = (map[e->mapPos[0] + 1][e->mapPos[1]] == '1');
-				e->wall[e->DOWN] = (map[e->mapPos[0] - 1][e->mapPos[1]] == '1');
-				enemies[enemyInd] = temp;
-				enemyInd++;
 			}
 
 			else if (map[i][j] == 'P')
@@ -134,28 +118,67 @@ void level::InitialLevel::Init()
 			{
 				t->SetScale({ t->GetScale().x / 1.2f, t->GetScale().y / 1.2f });
 			}
-
-			else if (map[i][j] == '2')
-			{
-				a = temp->GetComponent<AudioComp>();
-				a->playAudio(-1, "Assets/Audio/bouken.mp3");
-
-				p = temp->GetComponent<PlayerComp>();
-				
-				p->mapPos[0] = i;
-				p->mapPos[1] = j;
-				p->spawnPos[0] = i;
-				p->spawnPos[1] = j;
-				p->targetX = x;
-				p->targetY = y;
-				p->wall[p->LEFT] = (map[p->mapPos[0]][p->mapPos[1] - 1] == '1') || (map[p->mapPos[0]][p->mapPos[1] - 1] == 'P');
-				p->wall[p->RIGHT] = (map[p->mapPos[0]][p->mapPos[1] + 1] == '1') || (map[p->mapPos[0]][p->mapPos[1] + 1] == 'P');
-				p->wall[p->UP] = (map[p->mapPos[0] + 1][p->mapPos[1]] == '1') || (map[p->mapPos[0] + 1][p->mapPos[1]] == 'P');
-				p->wall[p->DOWN] = (map[p->mapPos[0] - 1][p->mapPos[1]] == '1') || (map[p->mapPos[0] - 1][p->mapPos[1]] == 'P');
-
-				player = temp;
-			}
 		}
+	}
+
+	{
+		int i = playerLoc.first;
+		int j = playerLoc.second;
+
+		temp = pPrefab.NewGameObject();
+		temp->SetType(Entity::Player);
+
+		t = temp->GetComponent<TransformComp>();
+		t->SetScale({ windowWidth / width, windowHeight / height });
+		float x = MapToPosX(j);
+		float y = MapToPosY(i);
+		t->SetPos({ x, y });
+
+		a = temp->GetComponent<AudioComp>();
+		a->playAudio(-1, "Assets/Audio/bouken.mp3");
+
+		p = temp->GetComponent<PlayerComp>();
+		p->mapPos[0] = i;
+		p->mapPos[1] = j;
+		p->spawnPos[0] = i;
+		p->spawnPos[1] = j;
+		p->targetX = x;
+		p->targetY = y;
+		p->wall[p->LEFT] = (map[p->mapPos[0]][p->mapPos[1] - 1] == '1') || (map[p->mapPos[0]][p->mapPos[1] - 1] == 'P');
+		p->wall[p->RIGHT] = (map[p->mapPos[0]][p->mapPos[1] + 1] == '1') || (map[p->mapPos[0]][p->mapPos[1] + 1] == 'P');
+		p->wall[p->UP] = (map[p->mapPos[0] + 1][p->mapPos[1]] == '1') || (map[p->mapPos[0] + 1][p->mapPos[1]] == 'P');
+		p->wall[p->DOWN] = (map[p->mapPos[0] - 1][p->mapPos[1]] == '1') || (map[p->mapPos[0] - 1][p->mapPos[1]] == 'P');
+
+		player = temp;
+		p->coinCount = coinCount;
+	}
+
+	for (int ind = 0; ind < enemyCount; ind++)
+	{
+		int i = enemyLoc[ind].first;
+		int j = enemyLoc[ind].second;
+
+		temp = ePrefab.NewGameObject();
+
+		t = temp->GetComponent<TransformComp>();
+		t->SetScale({ windowWidth / width, windowHeight / height });
+		float x = MapToPosX(j);
+		float y = MapToPosY(i);
+		t->SetPos({ x, y });
+
+		e = temp->GetComponent<EnemyComp>();
+		e->mapPos[0] = i;
+		e->mapPos[1] = j;
+		e->spawnPos[0] = i;
+		e->spawnPos[1] = j;
+		e->targetX = x;
+		e->targetY = y;
+		e->wall[e->LEFT] = (map[e->mapPos[0]][e->mapPos[1] - 1] == '1');
+		e->wall[e->RIGHT] = (map[e->mapPos[0]][e->mapPos[1] + 1] == '1');
+		e->wall[e->UP] = (map[e->mapPos[0] + 1][e->mapPos[1]] == '1');
+		e->wall[e->DOWN] = (map[e->mapPos[0] - 1][e->mapPos[1]] == '1');
+		e->InitEnemy();
+		enemies[ind] = temp;
 	}
 
 	for (auto enemy : enemies)
@@ -163,8 +186,6 @@ void level::InitialLevel::Init()
 		e = enemy->GetComponent<EnemyComp>();
 		e->playerTrans = player->GetComponent<TransformComp>();
 	}
-
-	p->coinCount = coinCount;
 }
 
 void level::InitialLevel::Update()

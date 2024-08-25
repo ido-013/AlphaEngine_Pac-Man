@@ -61,7 +61,6 @@ void GameObject::OnEvent(Event* event)
 			else if (event->src->GetType() == Entity::Ghost)
 			{
 				GetComponent<PlayerComp>()->AddScore(500, true);
-				event->src->SetType(Entity::Specter);
 			}
 		}
 	}
@@ -135,6 +134,14 @@ void GameObject::OnEvent(Event* event)
 		{
 			this->SetType(Entity::Enemy);
 			GetComponent<EnemyComp>()->ResetPos();
+		}
+
+		if (dynamic_cast<CollisionEvent*>(event) != nullptr)
+		{
+			if (event->src->GetType() == Entity::Player)
+			{
+				GetComponent<EnemyComp>()->InitSpector();
+			}
 		}
 	}
 

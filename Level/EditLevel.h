@@ -3,7 +3,7 @@
 
 namespace level
 {
-	class TransformTest : public GSM::BaseLevel
+	class EditLevel : public GSM::BaseLevel
 	{
 	public:
 		void Init() override;

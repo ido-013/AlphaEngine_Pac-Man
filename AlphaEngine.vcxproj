@@ -121,8 +121,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q</C
     <ClCompile Include="Level\GameClear.cpp" />
     <ClCompile Include="Level\GameOver.cpp" />
     <ClCompile Include="Level\InitialLevel.cpp" />
-    <ClCompile Include="Level\TestLevel.cpp" />
-    <ClCompile Include="Level\TransformTest.cpp" />
+    <ClCompile Include="Level\EditLevel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Prefab\Prefab.cpp" />
     <ClCompile Include="Resource\AudioResource.cpp" />
@@ -163,8 +162,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q</C
     <ClInclude Include="Level\GameClear.h" />
     <ClInclude Include="Level\GameOver.h" />
     <ClInclude Include="Level\InitialLevel.h" />
-    <ClInclude Include="Level\TestLevel.h" />
-    <ClInclude Include="Level\TransformTest.h" />
+    <ClInclude Include="Level\EditLevel.h" />
     <ClInclude Include="Map\Map.h" />
     <ClInclude Include="Prefab\Prefab.h" />
     <ClInclude Include="Resource\AudioResource.h" />
