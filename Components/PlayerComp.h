@@ -35,14 +35,16 @@ private:
 	int life = 3;
 	int score = 0;
 	int coinCount = 0;
+	int combo = 1;
 	
 	std::vector<GameObject*> lives;
+
 	s8 pFont;
 
 public:
 	PlayerComp(GameObject* _owner);
 	~PlayerComp();
-	void AddScore(int _score); 
+	void AddScore(int _score, bool isEnemy); 
 	void Update() override;
 	void ResetPos();
 	void UpdateLife();

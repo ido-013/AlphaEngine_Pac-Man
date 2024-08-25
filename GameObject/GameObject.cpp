@@ -33,7 +33,7 @@ void GameObject::OnEvent(Event* event)
 			if (event->src->GetType() == Entity::Coin)
 			{
 				EventManager::GetInstance().AddEvent<DestroyEvent>(event->dst, event->src);
-				GetComponent<PlayerComp>()->AddScore(10);
+				GetComponent<PlayerComp>()->AddScore(10, false);
 				GetComponent<PlayerComp>()->UpdateCoin();
 			}
 
@@ -47,7 +47,7 @@ void GameObject::OnEvent(Event* event)
 			{
 				if (GetComponent<PlayerComp>()->superMode)
 				{
-					GetComponent<PlayerComp>()->AddScore(500);
+					GetComponent<PlayerComp>()->AddScore(500, true);
 					EventManager::GetInstance().AddEvent<DeathEvent>(event->dst, event->src);
 				}
 				else

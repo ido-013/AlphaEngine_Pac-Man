@@ -2,6 +2,7 @@
 #include "../ComponentManager/LogicComponent.h"
 #include "../Event/Entity.h"
 #include "TransformComp.h"
+#include "../Level/InitialLevel.h"
 
 class EnemyComp : public LogicComponent
 {
@@ -14,20 +15,24 @@ public:
 		DOWN = 3,
 	};
 
-	bool isRot = true;
+private:
 	bool wall[4] = { false };
+	bool isRot = true;
+	bool isOut = false;
+
 	int mapPos[2];
 	int spawnPos[2];
+
 	float targetX;
 	float targetY;
 
-	TransformComp* playerTrans = nullptr;
-
-private:
 	int dx[4] = { 1, 0, -1, 0 };
 	int dy[4] = { 0, 1, 0, -1 };
-	float speed = 500;
 	direction dir = DOWN;
+
+	float speed = 500;
+
+	TransformComp* playerTrans = nullptr;
 
 public:
 	EnemyComp(GameObject* _owner);
@@ -40,4 +45,7 @@ public:
 
 	static BaseRTTI* CreateEnemyComponent(GameObject* owner);
 	static constexpr const char* TypeName = "EnemyComp";
+
+	friend level::InitialLevel;
+	friend GameObject;
 };

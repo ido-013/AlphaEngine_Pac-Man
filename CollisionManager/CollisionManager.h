@@ -17,7 +17,8 @@ private:
 
 	std::vector<TransformComp*> transformList;
 
-	bool isCollision(TransformComp*, TransformComp*) const;
+	bool isCollisionAABBAABB(TransformComp*, TransformComp*) const;
+	bool isCollisionCircleCircle(TransformComp*, TransformComp*) const;
 
 public:
 	static CollisionManager& GetInstance()

@@ -154,12 +154,16 @@ void level::InitialLevel::Init()
 void level::InitialLevel::Update()
 {
 	TransformComp* t = nullptr;
+	SpriteComp* s = nullptr;
 	EnemyComp* e = nullptr;
 	PlayerComp* p = nullptr;
+
+	p = player->GetComponent<PlayerComp>();
 
 	for (auto enemy : enemies)
 	{
 		t = enemy->GetComponent<TransformComp>();
+		s = enemy->GetComponent<SpriteComp>();
 		e = enemy->GetComponent<EnemyComp>();
 		AEVec2 enemyPos = t->GetPos();
 
@@ -169,21 +173,33 @@ void level::InitialLevel::Update()
 			e->mapPos[0] = PosToMapY(enemyPos.y);
 			e->mapPos[1] = PosToMapX(enemyPos.x);
 
-			e->targetY = MapToPosX(e->mapPos[0]);
+			e->targetY = MapToPosY(e->mapPos[0]);
 			e->targetX = MapToPosX(e->mapPos[1]);
 
 			if (e->isRot)
 				e->isRot = false;
+
+			e->wall[e->LEFT]	= (map[e->mapPos[0]][e->mapPos[1] - 1] == '1') || ((map[e->mapPos[0]][e->mapPos[1] - 1] == 'P') && e->isOut);
+			e->wall[e->RIGHT]	= (map[e->mapPos[0]][e->mapPos[1] + 1] == '1') || ((map[e->mapPos[0]][e->mapPos[1] + 1] == 'P') && e->isOut);
+			e->wall[e->UP]		= (map[e->mapPos[0] + 1][e->mapPos[1]] == '1') || ((map[e->mapPos[0] + 1][e->mapPos[1]] == 'P') && e->isOut);
+			e->wall[e->DOWN]	= (map[e->mapPos[0] - 1][e->mapPos[1]] == '1') || ((map[e->mapPos[0] - 1][e->mapPos[1]] == 'P') && e->isOut);
+
+			e->UpdateDir();
 		}
 
-		e->wall[e->LEFT]  =	(map[e->mapPos[0]][e->mapPos[1] - 1] == '1');
-		e->wall[e->RIGHT] = (map[e->mapPos[0]][e->mapPos[1] + 1] == '1');
-		e->wall[e->DOWN]  =	(map[e->mapPos[0] - 1][e->mapPos[1]] == '1');
-		e->wall[e->UP]    =	(map[e->mapPos[0] + 1][e->mapPos[1]] == '1');
+		if (p->superMode)
+		{
+			s->SetColor(0, 0, 255);
+			e->speed = 60;
+		}
+		else
+		{
+			s->SetColor(255, 0, 0);
+			e->speed = 100;
+		}
 	}
 
 	t = player->GetComponent<TransformComp>();
-	p = player->GetComponent<PlayerComp>();
 	AEVec2 playerPos = t->GetPos();
 
 	if (PosToMapX(playerPos.x) != p->mapPos[1]

@@ -11,9 +11,9 @@
 #include "../Prefab/Prefab.h"
 #include "../GameObjectManager/GameObjectManager.h"
 
-PlayerComp::PlayerComp(GameObject* _owner) : LogicComponent(_owner)//, pFont(AEGfxCreateFont("Assets/Arial-Italic.ttf", 20))
+PlayerComp::PlayerComp(GameObject* _owner) : LogicComponent(_owner), pFont(AEGfxCreateFont("Assets/Arial-Italic.ttf", 20))
 {
-	/*Prefab lPrefab("life");
+	Prefab lPrefab("life");
 	TransformComp* t = nullptr;
 
 	for (int i = 0; i < life; i++)
@@ -30,7 +30,7 @@ PlayerComp::PlayerComp(GameObject* _owner) : LogicComponent(_owner)//, pFont(AEG
 					-(windowHeight / 2) + (scaleY / 2) + padding });
 
 		lives.push_back(temp);
-	}*/
+	}
 }
 
 PlayerComp::~PlayerComp()
@@ -38,8 +38,14 @@ PlayerComp::~PlayerComp()
 	AEGfxDestroyFont(pFont);
 }
 
-void PlayerComp::AddScore(int _score)
+void PlayerComp::AddScore(int _score, bool isEnemy)
 {
+	if (isEnemy)
+	{
+		score += _score * combo;
+		combo++;
+	}
+
 	score += _score;
 }
 
@@ -59,15 +65,11 @@ void PlayerComp::Update()
 		static float time = 0;
 		time += AEFrameRateControllerGetFrameTime();
 
-		s->SetColor(0, 0, 255);
-		speed = 200;
-
 		if (time > 5)
 		{
 			superMode = false;
-			s->SetColor(255, 255, 255);
-			speed = 100;
 			time = 0;
+			combo = 1;
 		}
 	}
 
@@ -109,7 +111,7 @@ void PlayerComp::Update()
 	else
 		r->SetVelocity(dx[dir] * speed, dy[dir] * speed);
 
-	//AEGfxPrint(pFont, std::to_string(score).c_str(), -0.99f, 0.95f, 1.f, 1.f, 1.f, 1.f, 1.f);
+	AEGfxPrint(pFont, std::to_string(score).c_str(), -0.99f, 0.95f, 1.f, 1.f, 1.f, 1.f, 1.f);
 }
 
 void PlayerComp::ResetPos()
@@ -122,8 +124,8 @@ void PlayerComp::UpdateLife()
 {
 	life--;
 
-	/*GameObjectManager::GetInstance().RemoveObject(lives.back());*/
-	/*lives.pop_back();*/
+	GameObjectManager::GetInstance().RemoveObject(lives.back());
+	lives.pop_back();
 
 	if (life == 0)
 	{

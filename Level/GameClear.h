@@ -3,6 +3,8 @@
 #include "AEEngine.h"
 #include "../Components/PlayerComp.h"
 
+using json = nlohmann::ordered_json;
+
 namespace level
 {
 	class GameClear : public GSM::BaseLevel
@@ -10,6 +12,9 @@ namespace level
 	private:
 		s8 pFont;
 		int score;
+		int highScore = 0;
+		bool newRecord = false;
+
 	public:
 		GameClear(int _score) : score(_score), pFont(NULL) {}
 

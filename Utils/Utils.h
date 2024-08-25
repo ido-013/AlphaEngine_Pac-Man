@@ -1,5 +1,5 @@
 #pragma once
-#include "size.h"
+#include "Size.h"
 
 int PosToMapX(float x);
 int PosToMapY(float y);

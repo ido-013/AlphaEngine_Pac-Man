@@ -1,5 +1,6 @@
 #include "CollisionManager.h"
 #include "AEEngine.h"
+#include "../Utils/Utils.h"
 
 CollisionManager::CollisionManager() {}
 
@@ -8,7 +9,7 @@ CollisionManager::~CollisionManager()
 
 }
 
-bool CollisionManager::isCollision(TransformComp* a, TransformComp* b) const
+bool CollisionManager::isCollisionAABBAABB(TransformComp* a, TransformComp* b) const
 {
 	double aX = a->GetPos().x;
 	double aY = a->GetPos().y;
@@ -26,6 +27,19 @@ bool CollisionManager::isCollision(TransformComp* a, TransformComp* b) const
 	if (bY - bH > aY + aH) return false;
 
 	return true;
+}
+
+bool CollisionManager::isCollisionCircleCircle(TransformComp* a, TransformComp* b) const
+{
+	double aX = a->GetPos().x;
+	double aY = a->GetPos().y;
+	double aR = a->GetScale().x / 2;
+
+	double bX = b->GetPos().x;
+	double bY = b->GetPos().y;
+	double bR = b->GetScale().y / 2;
+
+	return ((aR + bR) * (aR + bR)) >= GetSqDistance(aX, aY, bX, bY);
 }
 
 void CollisionManager::AddTrans(TransformComp* trans)
@@ -59,7 +73,7 @@ void CollisionManager::Update()
 			TransformComp* a = transformList[i];
 			TransformComp* b = transformList[j];
 
-			if (isCollision(a, b))
+			if (isCollisionAABBAABB(a, b))
 			{
 				em.AddEvent<CollisionEvent>(a->GetOwner(), b->GetOwner());
 				em.AddEvent<CollisionEvent>(b->GetOwner(), a->GetOwner());

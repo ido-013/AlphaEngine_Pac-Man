@@ -2,6 +2,7 @@
 #include "AEEngine.h"
 #include "TransformComp.h"
 #include "RigidbodyComp.h"
+#include "SpriteComp.h"
 #include "../Event/CollisionEvent.h"
 #include "../Utils/Utils.h"
 
@@ -18,30 +19,14 @@ void EnemyComp::Update()
 	RigidbodyComp* r = owner->GetComponent<RigidbodyComp>();
 	if (!r) return;
 
-	int emptyCount = 0;
-
-	for (int i = 0; i < 4; i++)
-	{
-		if (i == (dir + 2) % 4)
-			continue;
-
-		if (!wall[i])
-			emptyCount++;
-	}
-
-	if (emptyCount > 1 && !isRot)
-	{
-		UpdateDir();
-		isRot = true;
-	}
-
 	if (abs(targetX - t->GetPos().x) < 3 &&
 		abs(targetY - t->GetPos().y) < 3 &&
+		!isRot &&
 		((dir == UP && wall[UP]) ||
-		(dir == DOWN && wall[DOWN]) ||
-		(dir == RIGHT && wall[RIGHT]) ||
-		(dir == LEFT && wall[LEFT])))
-	{	
+			(dir == DOWN && wall[DOWN]) ||
+			(dir == RIGHT && wall[RIGHT]) ||
+			(dir == LEFT && wall[LEFT])))
+	{
 		for (int i = 0, r = rand() % 4; i < 4; i++)
 		{
 			if (r == (dir + 2) % 4 || wall[r] || dir == r)
@@ -57,9 +42,11 @@ void EnemyComp::Update()
 			}
 		}
 
+		if (!isOut)
+			isOut = true;
+
 		isRot = true;
 	}
-	
 	
 	r->SetVelocity(dx[dir] * speed, dy[dir] * speed);
 	t->SetRot((PI / 2) * dir);
@@ -69,32 +56,44 @@ void EnemyComp::UpdateDir()
 {
 	TransformComp* t = owner->GetComponent<TransformComp>();
 
-	float min = 10'000'000;
-	direction tempDir;
+	int emptyCount = 0;
 
 	for (int i = 0; i < 4; i++)
 	{
-		if (i == (dir + 2) % 4 || wall[i])
+		if (i == (dir + 2) % 4)
 			continue;
 
-		float y = MapToPosY(mapPos[0] + dy[i]);
-		float x = MapToPosX(mapPos[1] + dx[i]);
-
-		// calculate distance
-		float dis = GetSqDistance(playerTrans->GetPos().x, playerTrans->GetPos().y, x, y);
-
-		if (dis < min)
-		{
-			min = dis;
-			tempDir = direction(i);
-		}
+		if (!wall[i])
+			emptyCount++;
 	}
 
-	// if diff dir, correct pos and change dir	
-	if (dir != tempDir)
+	if (emptyCount > 1 && isOut)
 	{
-		t->SetPos({ targetX, targetY });
-		dir = tempDir;
+		float min = 10'000'000;
+		direction tempDir;
+
+		for (int i = 0; i < 4; i++)
+		{
+			if (i == (dir + 2) % 4 || wall[i])
+				continue;
+
+			float y = MapToPosY(mapPos[0] + dy[i]);
+			float x = MapToPosX(mapPos[1] + dx[i]);
+
+			float dis = GetSqDistance(playerTrans->GetPos().x, playerTrans->GetPos().y, x, y);
+
+			if (dis < min)
+			{
+				min = dis;
+				tempDir = direction(i);
+			}
+		}
+
+		if (dir != tempDir)
+		{
+			t->SetPos({ targetX, targetY });
+			dir = tempDir;
+		}
 	}
 }
 
