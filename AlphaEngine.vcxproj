@@ -143,6 +143,8 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q</C
     <ClInclude Include="Components\EnemyComp.h" />
     <ClInclude Include="Event\DestroyEvent.h" />
     <ClInclude Include="Event\DeathEvent.h" />
+    <ClInclude Include="Event\RestartEvent.h" />
+    <ClInclude Include="Event\SuperModeEvent.h" />
     <ClInclude Include="GameObject\GameObject.h" />
     <ClInclude Include="ComponentManager\GraphicComponent.h" />
     <ClInclude Include="ComponentManager\LogicComponent.h" />

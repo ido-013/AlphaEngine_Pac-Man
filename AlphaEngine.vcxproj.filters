@@ -233,6 +233,12 @@
     <ClInclude Include="Level\GameClear.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Event\SuperModeEvent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Event\RestartEvent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ComponentManager\ComponentManager.inl">

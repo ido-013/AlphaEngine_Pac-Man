@@ -17,7 +17,42 @@ void EnemyComp::Update()
 	if (!t) return;
 
 	RigidbodyComp* r = owner->GetComponent<RigidbodyComp>();
-	if (!r) return;
+	if (!r) return; 
+
+	SpriteComp* s = owner->GetComponent<SpriteComp>();
+	if (!s) return;
+
+	if (owner->GetType() == Entity::Enemy)
+	{
+		s->SetColor(255, 0, 0);
+		speed = 100;
+		ghostTimer = 0;
+		noneTimer = 0;
+	}
+	else if (owner->GetType() == Entity::Ghost)
+	{
+		s->SetColor(0, 0, 255);
+		speed = 60;
+
+		ghostTimer += AEFrameRateControllerGetFrameTime();
+		if (ghostTimer > 10)
+		{
+			ghostTimer = 0;
+			owner->SetType(Entity::Enemy);
+		}
+	}
+	else
+	{
+		s->SetColor(255, 255, 0);
+		speed = 200;
+
+		noneTimer += AEFrameRateControllerGetFrameTime();
+		if (noneTimer > 3)
+		{
+			noneTimer = 0;
+			owner->SetType(Entity::Enemy);
+		}
+	}
 
 	if (abs(targetX - t->GetPos().x) < 3 &&
 		abs(targetY - t->GetPos().y) < 3 &&
@@ -80,7 +115,18 @@ void EnemyComp::UpdateDir()
 			float y = MapToPosY(mapPos[0] + dy[i]);
 			float x = MapToPosX(mapPos[1] + dx[i]);
 
-			float dis = GetSqDistance(playerTrans->GetPos().x, playerTrans->GetPos().y, x, y);
+			if (owner->GetType() == Entity::Specter)
+			{
+				dstY = MapToPosY(spawnPos[0]);
+				dstX = MapToPosX(spawnPos[1]);
+			}
+			else
+			{
+				dstX = playerTrans->GetPos().x;
+				dstY = playerTrans->GetPos().y;
+			}
+
+			float dis = GetSqDistance(dstX, dstY, x, y);
 
 			if (dis < min)
 			{
@@ -99,8 +145,17 @@ void EnemyComp::UpdateDir()
 
 void EnemyComp::ResetPos()
 {
-	TransformComp* t = owner->GetComponent<TransformComp>();
-	t->SetPos({MapToPosX(spawnPos[1]), MapToPosY(spawnPos[0])});
+	auto t = owner->GetComponent<TransformComp>();
+	t->SetPos({ MapToPosX(spawnPos[1]), MapToPosY(spawnPos[0]) });
+	dir = DOWN;
+	isOut = false;
+	isRot = true;
+}
+
+void EnemyComp::InitGhost()
+{
+	owner->SetType(Entity::Ghost);
+	ghostTimer = 0;
 }
 
 void EnemyComp::LoadFromJson(const json& data)

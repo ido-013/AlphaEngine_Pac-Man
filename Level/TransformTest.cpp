@@ -20,16 +20,23 @@ void level::TransformTest::Init()
 
 	temp->AddComponent<TransformComp>();
 	temp->AddComponent<SpriteComp>();
+	temp->AddComponent<AudioComp>();
+	temp->AddComponent<PlayerComp>();
+	temp->AddComponent<RigidbodyComp>();
 
-	TransformComp* ct = temp->GetComponent<TransformComp>();
-	ct->SetScale({ 100, 100 });
-	ct->SetPos({ 0, 0 });
+	AudioComp* ta = temp->GetComponent<AudioComp>();
+	ta->SetAudio("Assets/Audio/bouken.mp3");
+	ta->SetAudio("Assets/Audio/ore.mp3");
 
-	SpriteComp* cs = temp->GetComponent<SpriteComp>();
-	cs->SetTexture("Assets/heart.png");
-	cs->SetColor(0, 0, 0);
+	TransformComp* tt = temp->GetComponent<TransformComp>();
+	tt->SetScale({ 100, 100 });
+	tt->SetPos({ 0, 0 });
 
-	Prefab::SavePrefab("life", temp);
+	SpriteComp* ts = temp->GetComponent<SpriteComp>();
+	ts->SetTexture("Assets/arrow.png");
+	ts->SetColor(255, 255, 255);
+
+	Prefab::SavePrefab("player", temp);
 }
 
 void level::TransformTest::Update()

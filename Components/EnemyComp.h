@@ -20,25 +20,33 @@ private:
 	bool isRot = true;
 	bool isOut = false;
 
+	float ghostTimer = 0;
+	float noneTimer = 0;
+
 	int mapPos[2];
 	int spawnPos[2];
 
 	float targetX;
 	float targetY;
 
+	float dstX;
+	float dstY;
+
 	int dx[4] = { 1, 0, -1, 0 };
 	int dy[4] = { 0, 1, 0, -1 };
 	direction dir = DOWN;
 
 	float speed = 500;
-
+	
 	TransformComp* playerTrans = nullptr;
 
 public:
 	EnemyComp(GameObject* _owner);
 	void Update() override;
 	void UpdateDir();
+
 	void ResetPos();
+	void InitGhost();
 
 	void LoadFromJson(const json&) override;
 	json SaveToJson() override;

@@ -16,7 +16,7 @@
 
 void level::InitialLevel::Init()
 {
-	Prefab pPrefab("test");
+	Prefab pPrefab("player");
 	Prefab cPrefab("coin");
 	Prefab wPrefab("wall");
 	Prefab ePrefab("enemy");
@@ -25,6 +25,7 @@ void level::InitialLevel::Init()
 	SpriteComp* s = nullptr;
 	PlayerComp* p = nullptr;
 	EnemyComp* e = nullptr;
+	AudioComp* a = nullptr;
 	GameObject* temp = nullptr;
 
 	int enemyInd = 0;
@@ -33,111 +34,126 @@ void level::InitialLevel::Init()
 	{
 		for (int j = 0; j < width; j++)
 		{
-			if (map[i][j] != '-')
+
+			if (map[i][j] == '1')
 			{
-				if (map[i][j] == '1')
-				{
-					temp = wPrefab.NewGameObject();
-					temp->SetType(Entity::Wall);
-				}
+				temp = wPrefab.NewGameObject();
+				temp->SetType(Entity::Wall);
+			}
 
-				else if (map[i][j] == 'o')
-				{
-					temp = cPrefab.NewGameObject();
-					temp->SetType(Entity::Coin);
-					coinCount++;
-				}
+			else if (map[i][j] == 'o')
+			{
+				temp = cPrefab.NewGameObject();
+				temp->SetType(Entity::Coin);
+				coinCount++;
+			}
 
-				else if (map[i][j] == 'E')
-				{
-					temp = ePrefab.NewGameObject();
-					temp->SetType(Entity::Enemy);
-				}
+			else if (map[i][j] == 'E')
+			{
+				temp = ePrefab.NewGameObject();
+				temp->SetType(Entity::Enemy);
+			}
 
-				else if (map[i][j] == 'P')
-				{
-					temp = wPrefab.NewGameObject();
-					temp->SetType(Entity::Wall);
-				}
+			else if (map[i][j] == 'P')
+			{
+				temp = wPrefab.NewGameObject();
+				temp->SetType(Entity::Wall);
+			}
 
-				else if (map[i][j] == '*')
-				{
-					temp = cPrefab.NewGameObject();
-					temp->SetType(Entity::Super);
-				}
+			else if (map[i][j] == '*')
+			{
+				temp = cPrefab.NewGameObject();
+				temp->SetType(Entity::Super);
+			}
 
-				else
-				{
-					temp = pPrefab.NewGameObject();
-					temp->SetType(Entity::Player);
-				}
+			else if (map[i][j] == '$')
+			{
+				temp = cPrefab.NewGameObject();
+				temp->SetType(Entity::SuperCoin);
+				coinCount++;
+			}
 
-				t = temp->GetComponent<TransformComp>();
+			else if (map[i][j] == '2')
+			{
+				temp = pPrefab.NewGameObject();
+				temp->SetType(Entity::Player);
+			}
 
-				t->SetScale({ windowWidth / width, windowHeight / height });
+			else
+				continue;
 
-				float x = MapToPosX(j);
-				float y = MapToPosY(i);
-				t->SetPos({ x, y });
+			t = temp->GetComponent<TransformComp>();
+
+			t->SetScale({ windowWidth / width, windowHeight / height });
+
+			float x = MapToPosX(j);
+			float y = MapToPosY(i);
+			t->SetPos({ x, y });
+
+			if (map[i][j] == '1')
+			{
+
+			}
+
+			else if (map[i][j] == 'o')
+			{
+				t->SetScale({ t->GetScale().x / 2.f, t->GetScale().y / 2.f });
+			}
+
+			else if (map[i][j] == 'E')
+			{
+				e = temp->GetComponent<EnemyComp>();
+				e->mapPos[0] = i;
+				e->mapPos[1] = j;
+				e->spawnPos[0] = i;
+				e->spawnPos[1] = j;
+				e->targetX = x;
+				e->targetY = y;
+				e->wall[e->LEFT] = (map[e->mapPos[0]][e->mapPos[1] - 1] == '1');
+				e->wall[e->RIGHT] = (map[e->mapPos[0]][e->mapPos[1] + 1] == '1');
+				e->wall[e->UP] = (map[e->mapPos[0] + 1][e->mapPos[1]] == '1');
+				e->wall[e->DOWN] = (map[e->mapPos[0] - 1][e->mapPos[1]] == '1');
+				enemies[enemyInd] = temp;
+				enemyInd++;
+			}
+
+			else if (map[i][j] == 'P')
+			{
+				s = temp->GetComponent<SpriteComp>();
+				s->SetColor(0, 255, 0);
+			}
+
+			else if (map[i][j] == '*')
+			{
+				s = temp->GetComponent<SpriteComp>();
+				t->SetScale({ t->GetScale().x / 1.2f, t->GetScale().y / 1.2f });
+				s->SetColor(0, 0, 255);
+			}
+
+			else if (map[i][j] == '$')
+			{
+				t->SetScale({ t->GetScale().x / 1.2f, t->GetScale().y / 1.2f });
+			}
+
+			else if (map[i][j] == '2')
+			{
+				a = temp->GetComponent<AudioComp>();
+				a->playAudio(-1, "Assets/Audio/bouken.mp3");
+
+				p = temp->GetComponent<PlayerComp>();
 				
-				if (map[i][j] == '1')
-				{
-					
-				}
+				p->mapPos[0] = i;
+				p->mapPos[1] = j;
+				p->spawnPos[0] = i;
+				p->spawnPos[1] = j;
+				p->targetX = x;
+				p->targetY = y;
+				p->wall[p->LEFT] = (map[p->mapPos[0]][p->mapPos[1] - 1] == '1') || (map[p->mapPos[0]][p->mapPos[1] - 1] == 'P');
+				p->wall[p->RIGHT] = (map[p->mapPos[0]][p->mapPos[1] + 1] == '1') || (map[p->mapPos[0]][p->mapPos[1] + 1] == 'P');
+				p->wall[p->UP] = (map[p->mapPos[0] + 1][p->mapPos[1]] == '1') || (map[p->mapPos[0] + 1][p->mapPos[1]] == 'P');
+				p->wall[p->DOWN] = (map[p->mapPos[0] - 1][p->mapPos[1]] == '1') || (map[p->mapPos[0] - 1][p->mapPos[1]] == 'P');
 
-				else if (map[i][j] == 'o')
-				{
-					t->SetScale({ t->GetScale().x / 2.f, t->GetScale().y / 2.f });
-				}
-
-				else if (map[i][j] == 'E')
-				{
-					e = temp->GetComponent<EnemyComp>();
-
-					e->mapPos[0] = i;
-					e->mapPos[1] = j;
-					e->spawnPos[0] = i;
-					e->spawnPos[1] = j;
-					e->targetX = x;
-					e->targetY = y;
-					e->wall[e->LEFT]  =	(map[e->mapPos[0]][e->mapPos[1] - 1] == '1');
-					e->wall[e->RIGHT] = (map[e->mapPos[0]][e->mapPos[1] + 1] == '1');
-					e->wall[e->UP]    =	(map[e->mapPos[0] + 1][e->mapPos[1]] == '1');
-					e->wall[e->DOWN]  =	(map[e->mapPos[0] - 1][e->mapPos[1]] == '1');
-					enemies[enemyInd] = temp;
-					enemyInd++;
-				}
-
-				else if (map[i][j] == 'P')
-				{
-					s = temp->GetComponent<SpriteComp>();
-					s->SetColor(0, 255, 0);
-				}
-
-				else if (map[i][j] == '*')
-				{
-					s = temp->GetComponent<SpriteComp>();
-					t->SetScale({ t->GetScale().x / 1.2f, t->GetScale().y / 1.2f });
-					s->SetColor(0, 0, 255);
-				}
-
-				else
-				{
-					p = temp->GetComponent<PlayerComp>();
-
-					p->mapPos[0] = i;
-					p->mapPos[1] = j;
-					p->spawnPos[0] = i;
-					p->spawnPos[1] = j;
-					p->targetX = x;
-					p->targetY = y;
-					p->wall[p->LEFT]  =	(map[p->mapPos[0]][p->mapPos[1] - 1] == '1') || (map[p->mapPos[0]][p->mapPos[1] - 1] == 'P');
-					p->wall[p->RIGHT] = (map[p->mapPos[0]][p->mapPos[1] + 1] == '1') || (map[p->mapPos[0]][p->mapPos[1] + 1] == 'P');
-					p->wall[p->UP]    =	(map[p->mapPos[0] + 1][p->mapPos[1]] == '1') || (map[p->mapPos[0] + 1][p->mapPos[1]] == 'P');
-					p->wall[p->DOWN]  =	(map[p->mapPos[0] - 1][p->mapPos[1]] == '1') || (map[p->mapPos[0] - 1][p->mapPos[1]] == 'P');
-
-					player = temp;
-				}
+				player = temp;
 			}
 		}
 	}
@@ -186,17 +202,6 @@ void level::InitialLevel::Update()
 
 			e->UpdateDir();
 		}
-
-		if (p->superMode)
-		{
-			s->SetColor(0, 0, 255);
-			e->speed = 60;
-		}
-		else
-		{
-			s->SetColor(255, 0, 0);
-			e->speed = 100;
-		}
 	}
 
 	t = player->GetComponent<TransformComp>();
@@ -223,6 +228,6 @@ void level::InitialLevel::Update()
 
 void level::InitialLevel::Exit()
 {
-	GameObjectManager::GetInstance().RemoveAllObject();
 	EventManager::GetInstance().DeleteUndispahchEvent();
+	GameObjectManager::GetInstance().RemoveAllObject();
 }

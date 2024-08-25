@@ -11,6 +11,7 @@ class EventManager
 private:
 	//A container for all my events* (queue)
 	std::queue<Event*> allEvents;
+	std::list<Entity*> entityList;
 
 	//Make singleton
 	EventManager();
@@ -35,6 +36,12 @@ public:
 	// Add an event (event*) this are pointers to dynamic memory, called as the following: AddEvent(new Event);
 	template <typename T>
 	void AddEvent(Entity* src, Entity* dst);	
+
+	template <typename T>
+	void AddEvent(Entity* src, Entity::Type type);
+
+	void AddEntity(Entity* entity);
+	void RemoveEntity(Entity* entity);
 
 	// DispatchAllEvents
 	void DispatchAllEvents();

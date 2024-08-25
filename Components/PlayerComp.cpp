@@ -60,19 +60,6 @@ void PlayerComp::Update()
 	SpriteComp* s = owner->GetComponent<SpriteComp>();
 	if (!s) return;
 
-	if (superMode)
-	{
-		static float time = 0;
-		time += AEFrameRateControllerGetFrameTime();
-
-		if (time > 5)
-		{
-			superMode = false;
-			time = 0;
-			combo = 1;
-		}
-	}
-
 	if (AEInputCheckCurr(AEVK_W) && dir != DOWN && dir != UP && !wall[UP] && !isRot)
 	{	
 		t->SetPos({ targetX, targetY });
@@ -118,6 +105,7 @@ void PlayerComp::ResetPos()
 {
 	TransformComp* t = owner->GetComponent<TransformComp>();
 	t->SetPos({ MapToPosX(spawnPos[1]), MapToPosY(spawnPos[0]) });
+	dir = RIGHT;
 }
 
 void PlayerComp::UpdateLife()
